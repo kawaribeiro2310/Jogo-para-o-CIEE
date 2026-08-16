@@ -49,8 +49,30 @@
     width:100%; height:100%;
     image-rendering: -webkit-optimize-contrast;
   }
-  @media (max-width: 980px){
-    #stage{ width:100vw; height:calc(100vw * 0.6667); border-radius:0; box-shadow:none; }
+
+  /* ---------- TELA DE MENU INICIAL ---------- */
+  #mainMenuOverlay {
+    position: absolute; inset: 0; z-index: 50;
+    background: radial-gradient(ellipse at center, rgba(45,27,78,0.96), rgba(13,8,24,0.98));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 20px;
+  }
+  #mainMenuOverlay h1 {
+    color: var(--gold); font-size: 38px; margin-bottom: 8px;
+    text-shadow: 0 0 15px rgba(232,196,104,0.6);
+  }
+  #mainMenuOverlay .creators {
+    color: var(--lilac); font-size: 16px; margin-bottom: 30px; letter-spacing: 1px;
+  }
+  #mainMenuOverlay button {
+    background: var(--gold); color: var(--night-deep);
+    border: none; border-radius: 14px; padding: 14px 32px;
+    font-size: 18px; font-weight: bold; cursor: pointer;
+    box-shadow: 0 5px 20px rgba(232,196,104,0.4);
+    transition: transform 0.2s, filter 0.2s;
+  }
+  #mainMenuOverlay button:hover {
+    transform: scale(1.05); filter: brightness(1.1);
   }
 
   /* ---------- HUD ---------- */
@@ -144,7 +166,7 @@
     background: var(--gold); color:var(--night-deep); padding:1px 7px; border-radius:5px; font-weight:bold;
   }
 
-  /* ---------- Dialogue (Stardew Style with talking bounce) ---------- */
+  /* ---------- Dialogue ---------- */
   #dialogueBox{
     position:absolute; z-index:10;
     left:50%; bottom:16px; transform:translateX(-50%);
@@ -169,7 +191,6 @@
     margin-bottom:8px;
     font-size:13px;
     letter-spacing:0.5px;
-    /* Animação estilo Stardew Valley de fala (pulsação leve) */
     animation: talkBounce 0.4s ease-in-out infinite alternate;
   }
   @keyframes talkBounce {
@@ -177,29 +198,18 @@
     100% { transform: translateY(-2px); }
   }
 
-  #dlgText{
-    font-size:16px; line-height:1.5; color:var(--cream); min-height:56px;
-  }
-  #dlgChoices{
-    margin-top:12px; display:flex; flex-direction:column; gap:8px;
-  }
+  #dlgText{ font-size:16px; line-height:1.5; color:var(--cream); min-height:56px; }
+  #dlgChoices{ margin-top:12px; display:flex; flex-direction:column; gap:8px; }
   .choiceBtn{
-    text-align:left;
-    background: rgba(201,168,224,0.08);
-    border: 2px solid var(--lilac);
-    color: var(--lilac-soft);
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-size:14px;
-    cursor:pointer;
-    transition: all 0.15s ease;
-    font-family: inherit;
+    text-align:left; background: rgba(201,168,224,0.08);
+    border: 2px solid var(--lilac); color: var(--lilac-soft);
+    padding: 8px 14px; border-radius: 10px; font-size:14px; cursor:pointer;
+    transition: all 0.15s ease; font-family: inherit;
   }
   .choiceBtn:hover{ background: var(--lilac); color: var(--night-deep); transform: translateX(4px); }
   #dlgContinueHint{
     position:absolute; right:20px; bottom:12px;
-    font-size:11px; color: var(--gold-dim);
-    animation: blink 1.3s infinite;
+    font-size:11px; color: var(--gold-dim); animation: blink 1.3s infinite;
   }
   @keyframes blink{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
 
@@ -214,17 +224,12 @@
   #eduCard{
     width:86%; max-width:560px; max-height:82%;
     background: linear-gradient(160deg, var(--night-mid), var(--night-deep));
-    border: 3px solid var(--gold);
-    border-radius: 20px;
-    padding: 22px 26px;
-    box-shadow: 0 0 0 6px rgba(232,196,104,0.15), 0 20px 60px rgba(0,0,0,0.7);
-    overflow-y:auto;
-    animation: popIn 0.3s ease;
+    border: 3px solid var(--gold); border-radius: 20px;
+    padding: 22px 26px; box-shadow: 0 0 0 6px rgba(232,196,104,0.15), 0 20px 60px rgba(0,0,0,0.7);
+    overflow-y:auto; animation: popIn 0.3s ease;
   }
   @keyframes popIn{ from{ transform:scale(0.9); opacity:0;} to{ transform:scale(1); opacity:1;} }
-  #eduCard h2{
-    margin:0 0 4px 0; color:var(--gold); font-size:19px; display:flex; gap:8px; align-items:center;
-  }
+  #eduCard h2{ margin:0 0 4px 0; color:var(--gold); font-size:19px; display:flex; gap:8px; align-items:center; }
   #eduCard .tag{
     display:inline-block; font-size:10px; letter-spacing:1px; text-transform:uppercase;
     color: var(--night-deep); background: var(--lilac); padding:2px 10px; border-radius:8px; margin-bottom:10px;
@@ -233,36 +238,20 @@
   #eduCard .cardBody b{ color: var(--gold); }
   #eduCard .lawref{
     margin-top:12px; padding:10px 14px;
-    background: rgba(143,211,160,0.08);
-    border-left: 3px solid var(--ok);
-    border-radius: 6px;
-    font-size:13px; color:var(--ok);
+    background: rgba(143,211,160,0.08); border-left: 3px solid var(--ok);
+    border-radius: 6px; font-size:13px; color:var(--ok);
   }
   #eduCard button{
-    margin-top:18px;
-    width:100%;
-    background: var(--gold);
-    color: var(--night-deep);
-    border:none; border-radius:12px;
-    padding: 10px;
-    font-weight:bold; font-size:14px;
-    cursor:pointer;
-    letter-spacing:0.5px;
-  }
-  #eduCard button:hover{ filter:brightness(1.08); }
-
-  /* ---------- Feedback flash ---------- */
-  #feedbackFlash{
-    position:absolute; inset:0; z-index:9; pointer-events:none;
-    opacity:0;
+    margin-top:18px; width:100%; background: var(--gold); color: var(--night-deep);
+    border:none; border-radius:12px; padding: 10px; font-weight:bold; font-size:14px; cursor:pointer;
   }
 
-  /* ---------- Win screen ---------- */
+  #feedbackFlash{ position:absolute; inset:0; z-index:9; pointer-events:none; opacity:0; }
+
   #winOverlay{
     position:absolute; inset:0; z-index:30;
     background: radial-gradient(ellipse at center, rgba(45,27,78,0.95), rgba(10,6,20,0.98));
-    display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center;
-    padding: 30px;
+    display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding: 30px;
   }
   #winOverlay.visible{ display:flex; animation: fadeIn 0.6s ease; }
   #winOverlay h1{ color:var(--gold); font-size:30px; margin-bottom:6px; text-shadow:0 0 20px rgba(232,196,104,0.6); }
@@ -276,20 +265,13 @@
 
   /* Mobile touch controls */
   #touchControls{
-    position:absolute; z-index:15; bottom:14px; left:14px;
-    display:none;
-    grid-template-columns: 44px 44px 44px;
-    grid-template-rows: 44px 44px 44px;
-    gap:4px;
+    position:absolute; z-index:15; bottom:14px; left:14px; display:none;
+    grid-template-columns: 44px 44px 44px; grid-template-rows: 44px 44px 44px; gap:4px;
   }
-  #touchControls button{
-    background: var(--panel-bg); border:2px solid var(--lilac); border-radius:10px;
-    color:var(--cream); font-size:16px;
-  }
+  #touchControls button{ background: var(--panel-bg); border:2px solid var(--lilac); border-radius:10px; color:var(--cream); font-size:16px; }
   #touchInteract{
     position:absolute; z-index:15; bottom:24px; right:14px;
-    width:60px; height:60px; border-radius:50%;
-    background: var(--gold); color:var(--night-deep); border:3px solid var(--cream);
+    width:60px; height:60px; border-radius:50%; background: var(--gold); color:var(--night-deep); border:3px solid var(--cream);
     font-weight:bold; display:none; align-items:center; justify-content:center; font-size:13px;
   }
   @media (max-width:980px){
@@ -299,8 +281,21 @@
 </style>
 </head>
 <body>
+
+<!-- ELEMENTOS DE ÁUDIO -->
+<audio id="audioMenu" loop src="menu.mp3"></audio>
+<audio id="audioGame" loop src="jogo.mp3"></audio>
+
 <div id="gameWrap">
   <div id="stage">
+    
+    <!-- TELA DO MENU INICIAL -->
+    <div id="mainMenuOverlay">
+      <h1>🌙 Caminhos da Proteção</h1>
+      <div class="creators">Criado por: Kawã Ribeiro e Elton :D</div>
+      <button id="startBtn">▶ Iniciar Aventura</button>
+    </div>
+
     <canvas id="world" width="960" height="640"></canvas>
     <canvas id="feedbackFlash" width="960" height="640"></canvas>
 
@@ -368,6 +363,37 @@
 (function(){
 "use strict";
 
+// --- CONTROLE DE MÚSICA E MENU ---
+const audioMenu = document.getElementById('audioMenu');
+const audioGame = document.getElementById('audioGame');
+const mainMenuOverlay = document.getElementById('mainMenuOverlay');
+const startBtn = document.getElementById('startBtn');
+
+let gameStarted = false;
+
+// Toca a música da Kokiri Forest logo ao carregar a página
+window.addEventListener('load', () => {
+  audioMenu.volume = 0.5;
+  audioMenu.play().catch(e => console.log("Áudio bloqueado pelo navegador até haver interação."));
+});
+
+// Ação ao clicar em Iniciar
+startBtn.addEventListener('click', () => {
+  gameStarted = true;
+  mainMenuOverlay.style.display = 'none';
+
+  // Transição de Áudio: Para o menu e inicia o tema da Mipha
+  audioMenu.pause();
+  audioMenu.currentTime = 0;
+  
+  audioGame.volume = 0.5;
+  audioGame.play().catch(e => console.log("Erro ao reproduzir áudio do jogo."));
+});
+
+// --- CARREGAMENTO DO SPRITE DO PERSONAGEM (3.png) ---
+const playerSprite = new Image();
+playerSprite.src = '3.png';
+
 const COLORS = {
   nightDeep:'#1c1236', nightMid:'#2d1b4e', nightSoft:'#3c2a5e',
   forest:'#1e3a2f', forestLight:'#2f5741', forestDark:'#132720',
@@ -392,18 +418,10 @@ const decorations = [];
 function addBuilding(x,y,w,h,roofColor,wallColor,label){
   obstacles.push({x,y,w,h,type:'building',roofColor,wallColor,label});
 }
-function addTree(x,y){
-  obstacles.push({x,y,w:34,h:34,type:'tree'});
-}
-function addRock(x,y){
-  obstacles.push({x,y,w:26,h:20,type:'rock'});
-}
-function addFence(x,y,w,h){
-  obstacles.push({x,y,w,h,type:'fence'});
-}
-function addWaterPond(x,y,w,h){
-  obstacles.push({x,y,w,h,type:'water'});
-}
+function addTree(x,y){ obstacles.push({x,y,w:34,h:34,type:'tree'}); }
+function addRock(x,y){ obstacles.push({x,y,w:26,h:20,type:'rock'}); }
+function addFence(x,y,w,h){ obstacles.push({x,y,w,h,type:'fence'}); }
+function addWaterPond(x,y,w,h){ obstacles.push({x,y,w,h,type:'water'}); }
 
 obstacles.push({x:-40,y:-40,w:WORLD_W+80,h:40,type:'hedge'});
 obstacles.push({x:-40,y:WORLD_H,w:WORLD_W+80,h:40,type:'hedge'});
@@ -462,49 +480,21 @@ function updateCamera(){
   camera.y = Math.max(0, Math.min(WORLD_H - VIEW_H, camera.y));
 }
 
-// Função de desenho aprimorada com animação de passos fluida (bobbing)
+// Substituição da função geométrica pelo Sprite 3.png enviado
 function drawCharacter(c, x, y, w, h, color, dir, moving, animT){
   c.save();
-  c.translate(x + w/2, y + h);
-
-  // Animação suave de caminhar (bobbing vertical + leve inclinação baseada em seno)
+  c.translate(x, y);
+  
   let bob = 0;
-  let tilt = 0;
   if(moving){
-    bob = Math.abs(Math.sin(animT * 12)) * 4; // flutuação vertical suave
-    tilt = Math.sin(animT * 12) * 0.08;     // leve balanço lateral
+    bob = Math.abs(Math.sin(animT * 12)) * 3;
   }
-  c.translate(0, -bob);
-  c.rotate(tilt);
-
-  // Sombra no chão
-  c.fillStyle = 'rgba(0,0,0,0.3)';
-  c.beginPath();
-  c.ellipse(0, bob, w*0.4, 6, 0, 0, Math.PI*2);
-  c.fill();
-
-  // Corpo / Vestido / Camisa
-  c.fillStyle = color;
-  c.beginPath();
-  c.roundRect(-w/2, -h + 10, w, h - 14, 8);
-  c.fill();
-
-  // Cabeça / Rosto
-  c.fillStyle = '#fce4c8';
-  c.beginPath();
-  c.arc(0, -h + 8, 10, 0, Math.PI*2);
-  c.fill();
-
-  // Cabelo simples estilizado
-  c.fillStyle = '#4a2e18';
-  c.beginPath();
-  c.arc(0, -h + 5, 10, Math.PI, Math.PI*2);
-  c.fill();
-
+  
+  // Desenha a imagem do sprite (3.png) redimensionada para caber no tamanho do personagem
+  c.drawImage(playerSprite, 0, -bob, w + 6, h + 6);
   c.restore();
 }
 
-// ... Restante da lógica do jogo (atualização, colisão, diálogos e loop) permanece intacta com suporte otimizado ...
 })();
 </script>
 </body>

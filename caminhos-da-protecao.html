@@ -53,7 +53,7 @@
     #stage{ width:100vw; height:calc(100vw * 0.6667); border-radius:0; box-shadow:none; }
   }
 
-  /* ---------- MENU INICIAL (NOVO ESTILO BASEADO NA ARTE CONCEITUAL) ---------- */
+  /* ---------- MENU INICIAL ---------- */
   #mainMenu {
     position: absolute;
     inset: 0;
@@ -143,7 +143,7 @@
     width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     z-index: 2;
   }
   .menu-logo-title {
@@ -160,9 +160,9 @@
     background: rgba(30, 18, 50, 0.85);
     border: 2px solid var(--lilac);
     color: var(--cream);
-    padding: 12px 18px;
+    padding: 10px 16px;
     border-radius: 12px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     letter-spacing: 1px;
     cursor: pointer;
@@ -348,15 +348,15 @@
   }
   @keyframes blink{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
 
-  /* ---------- Educational Card Modal ---------- */
-  #cardOverlay{
+  /* ---------- Educational Card Modal & Titles Modal ---------- */
+  #cardOverlay, #titlesOverlay{
     position:absolute; inset:0; z-index:20;
     background: rgba(10,6,20,0.72);
     display:none; align-items:center; justify-content:center;
   }
-  #cardOverlay.visible{ display:flex; animation: fadeIn 0.25s ease; }
+  #cardOverlay.visible, #titlesOverlay.visible{ display:flex; animation: fadeIn 0.25s ease; }
   @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
-  #eduCard{
+  #eduCard, #titlesCard{
     width:86%; max-width:560px; max-height:82%;
     background: linear-gradient(160deg, var(--night-mid), var(--night-deep));
     border: 3px solid var(--gold);
@@ -367,7 +367,7 @@
     animation: popIn 0.3s ease;
   }
   @keyframes popIn{ from{ transform:scale(0.9); opacity:0;} to{ transform:scale(1); opacity:1;} }
-  #eduCard h2{
+  #eduCard h2, #titlesCard h2{
     margin:0 0 4px 0; color:var(--gold); font-size:19px; display:flex; gap:8px; align-items:center;
   }
   #eduCard .tag{
@@ -383,7 +383,7 @@
     border-radius: 6px;
     font-size:13px; color:var(--ok);
   }
-  #eduCard button{
+  #eduCard button, #titlesCard button{
     margin-top:18px;
     width:100%;
     background: var(--gold);
@@ -394,7 +394,28 @@
     cursor:pointer;
     letter-spacing:0.5px;
   }
-  #eduCard button:hover{ filter:brightness(1.08); }
+  #eduCard button:hover, #titlesCard button:hover{ filter:brightness(1.08); }
+
+  /* Estilos das Tags/Títulos */
+  .title-tag-item {
+    background: rgba(201, 168, 224, 0.12);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .title-tag-badge {
+    background: var(--gold);
+    color: var(--night-deep);
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
 
   /* ---------- Feedback flash ---------- */
   #feedbackFlash{
@@ -464,6 +485,7 @@
         <button class="menu-btn-nav" id="btnStartGame">Novo Jogo <span>👆</span></button>
         <button class="menu-btn-nav" id="btnContinue">Continuar <span>▶</span></button>
         <button class="menu-btn-nav" id="btnLoad">Carregar <span>📜</span></button>
+        <button class="menu-btn-nav" id="btnTitles">Meus Títulos <span>🎖️</span></button>
         <button class="menu-btn-nav" id="btnCode">Código de Proteção <span>🗝️</span></button>
         <button class="menu-btn-nav" id="btnOptions">Opções <span>⚙️</span></button>
         <button class="menu-btn-nav" id="btnExit">Sair <span>🚪</span></button>
@@ -516,6 +538,18 @@
       </div>
     </div>
 
+    <!-- MODAL DE TÍTULOS E TAGS -->
+    <div id="titlesOverlay">
+      <div id="titlesCard">
+        <h2>🎖️ Títulos de Kawazin</h2>
+        <p style="font-size:13px; color:var(--lilac-soft);">Aqui estão as tags e títulos conquistados na sua jornada:</p>
+        <div id="titlesList">
+          <div style="opacity:0.6; font-style:italic; margin:15px 0;" id="noTitlesText">Nenhum título desbloqueado ainda. Use códigos no menu para resgatar!</div>
+        </div>
+        <button id="titlesCloseBtn">Fechar</button>
+      </div>
+    </div>
+
     <div id="winOverlay">
       <h1>🏆 Jornada Concluída</h1>
       <div class="badges">
@@ -549,6 +583,9 @@ bgMenu.loop = true;
 const bgJogo = new Audio("jogo.mp3");
 bgJogo.loop = true;
 
+// Efeito sonoro de item/missão
+const sfxGetItem = new Audio("get-item.mp3");
+
 function playAudio(audio) {
   if (!audioMuted) {
     audio.play().catch(() => {});
@@ -558,6 +595,13 @@ function playAudio(audio) {
 function stopAudio(audio) {
   audio.pause();
   audio.currentTime = 0;
+}
+
+function playSfxItem() {
+  if (!audioMuted) {
+    sfxGetItem.currentTime = 0;
+    sfxGetItem.play().catch(() => {});
+  }
 }
 
 const audioToggleBtn = document.getElementById('audioToggle');
@@ -572,6 +616,36 @@ audioToggleBtn.addEventListener('click', () => {
     else playAudio(bgJogo);
   }
 });
+
+/* ============================================================
+   SISTEMA DE TÍTULOS / TAGS DO KAWAZIN
+============================================================ */
+const playerTitles = [];
+
+function unlockTitle(titleTag, description) {
+  if (!playerTitles.some(t => t.tag === titleTag)) {
+    playerTitles.push({ tag: titleTag, desc: description });
+    playSfxItem();
+  }
+}
+
+function updateTitlesUI() {
+  const listContainer = document.getElementById('titlesList');
+  if (playerTitles.length === 0) {
+    listContainer.innerHTML = `<div style="opacity:0.6; font-style:italic; margin:15px 0;">Nenhum título desbloqueado ainda. Use códigos no menu para resgatar!</div>`;
+    return;
+  }
+  listContainer.innerHTML = '';
+  playerTitles.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'title-tag-item';
+    item.innerHTML = `
+      <span class="title-tag-badge">${t.tag}</span>
+      <span style="font-size:13px; color:var(--cream);">${t.desc}</span>
+    `;
+    listContainer.appendChild(item);
+  });
+}
 
 /* ============================================================
    CARREGAMENTO DE SPRITES
@@ -963,6 +1037,7 @@ function flashFeedback(good){
 
 function markPhaseDone(phaseNum, npc){
   npc.done = true;
+  playSfxItem(); // Áudio get-item.mp3 ao concluir a missão do NPC
   document.getElementById('dot'+phaseNum).classList.add('done');
   const completed = npcs.filter(n=>n.done).length;
   const pct = Math.round((completed/3)*100);
@@ -1158,6 +1233,7 @@ function startInteraction(npc){
 
 function collectMiniQuest(q){
   q.collected = true;
+  playSfxItem(); // Áudio get-item.mp3 ao pegar item
   flashFeedback(true);
   spawnParticles(q.x, q.y, COLORS.gold, 30);
   const collectedCount = miniQuests.filter(mq=>mq.collected).length;
@@ -1218,12 +1294,28 @@ document.getElementById('btnLoad').addEventListener('click', ()=>{
   document.getElementById('btnStartGame').click();
 });
 
+document.getElementById('btnTitles').addEventListener('click', ()=>{
+  updateTitlesUI();
+  document.getElementById('titlesOverlay').classList.add('visible');
+});
+
+document.getElementById('titlesCloseBtn').addEventListener('click', ()=>{
+  document.getElementById('titlesOverlay').classList.remove('visible');
+});
+
 document.getElementById('btnCode').addEventListener('click', ()=>{
   const code = prompt("Digite o Código de Proteção:");
-  if(code === "180"){
-    alert("Código Aceito! Você ganhou o título 'Protetora de Direitos'.");
-  } else if(code){
-    alert("Código Inválido. Tente usar '180'.");
+  if(code) {
+    const formattedCode = code.trim().toLowerCase();
+    if(formattedCode === "180"){
+      unlockTitle("Protetora de Direitos", "Concedido por utilizar o código oficial 180 da Central de Atendimento à Mulher.");
+      alert("Código Aceito! Você ganhou o título 'Protetora de Direitos'. Confira na opção 'Meus Títulos'.");
+    } else if(formattedCode === "kawazin"){
+      unlockTitle("Criador do Jogo", "Título lendário concedido ao criador supremo do jogo, Kawazin!");
+      alert("👑 Código Supremo Aceito! Você adquiriu a tag e o título de 'Criador do Jogo'! Confira na opção 'Meus Títulos'.");
+    } else {
+      alert("Código Inválido. Tente usar '180' ou 'kawazin'.");
+    }
   }
 });
 
@@ -1586,6 +1678,8 @@ function renderMinimap(){
 /* ============================================================
    LOOP PRINCIPAL SINCRO COM FPS
 ============================================================ */
+let lastTime = performance.now();
+
 function loop(now){
   const dt = (now - lastTime) / 1000;
   lastTime = now;

@@ -47,163 +47,10 @@
   #stage canvas{
     position:absolute; top:0; left:0;
     width:100%; height:100%;
-    image-rendering: pixelated;
+    image-rendering: -webkit-optimize-contrast;
   }
   @media (max-width: 980px){
     #stage{ width:100vw; height:calc(100vw * 0.6667); border-radius:0; box-shadow:none; }
-  }
-
-  /* ---------- MENU INICIAL (NOVO ESTILO BASEADO NA ARTE CONCEITUAL) ---------- */
-  #mainMenu {
-    position: absolute;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(90deg, rgba(20, 10, 30, 0.85) 0%, rgba(15, 8, 25, 0.4) 50%, rgba(10, 5, 20, 0.9) 100%),
-                radial-gradient(circle at 30% 50%, #3a2254 0%, #110924 70%);
-    padding: 30px 50px;
-    transition: opacity 0.5s ease;
-  }
-  #mainMenu.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Lado Esquerdo / Avatar da Personagem Principal */
-  .menu-left-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 320px;
-    z-index: 2;
-  }
-  .character-card {
-    position: relative;
-    background: rgba(45, 27, 78, 0.75);
-    border: 3px solid var(--gold);
-    border-radius: 20px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 0 25px rgba(232, 196, 104, 0.3), inset 0 0 15px rgba(201, 168, 224, 0.2);
-    backdrop-filter: blur(6px);
-    animation: floatCard 4s ease-in-out infinite;
-  }
-  @keyframes floatCard {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-  }
-  .character-sprite-box {
-    width: 100px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(232, 196, 104, 0.3) 0%, transparent 70%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin-bottom: 12px;
-  }
-  .character-sprite-box img {
-    width: 64px;
-    height: 88px;
-    image-rendering: pixelated;
-    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.6));
-  }
-  .character-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .character-subtitle {
-    font-size: 12px;
-    color: var(--lilac-soft);
-    text-align: center;
-    line-height: 1.4;
-  }
-  .quest-badge-count {
-    margin-top: 12px;
-    background: rgba(143, 211, 160, 0.2);
-    border: 1px solid var(--ok);
-    color: var(--ok);
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: bold;
-  }
-
-  /* Painel Direito - Menu de Opções Verticais */
-  .menu-right-panel {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 2;
-  }
-  .menu-logo-title {
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--gold);
-    text-transform: uppercase;
-    text-align: right;
-    letter-spacing: 1.5px;
-    text-shadow: 0 0 12px rgba(232,196,104,0.5), 2px 2px 4px #000;
-    margin-bottom: 10px;
-  }
-  .menu-btn-nav {
-    background: rgba(30, 18, 50, 0.85);
-    border: 2px solid var(--lilac);
-    color: var(--cream);
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  }
-  .menu-btn-nav:hover {
-    background: var(--gold);
-    color: var(--night-deep);
-    border-color: var(--gold);
-    transform: translateX(-8px);
-    box-shadow: 0 4px 20px rgba(232,196,104,0.4);
-  }
-
-  /* ---------- CONTROLE DISCRETO DE ÁUDIO ---------- */
-  #audioToggle {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 40;
-    background: var(--panel-bg);
-    border: 2px solid var(--gold);
-    color: var(--gold);
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.2s ease;
-  }
-  #audioToggle:hover {
-    transform: scale(1.1);
-    background: var(--gold);
-    color: var(--night-deep);
   }
 
   /* ---------- HUD ---------- */
@@ -238,8 +85,8 @@
     font-size:13px; color:var(--cream); line-height:1.35;
   }
   #progressPanel{
-    top:12px; right:60px;
-    width:210px;
+    top:12px; right:12px;
+    width:230px;
     background: var(--panel-bg);
     border: 2px solid var(--gold);
     border-radius: 14px;
@@ -446,33 +293,6 @@
 <body>
 <div id="gameWrap">
   <div id="stage">
-    <!-- MENU INICIAL ESTILO ARTE CONCEITUAL COM SUA PERSONAGEM -->
-    <div id="mainMenu">
-      <div class="menu-left-panel">
-        <div class="character-card">
-          <div class="character-sprite-box">
-            <img src="3.png" alt="Sua Personagem">
-          </div>
-          <div class="character-title">Protagonista</div>
-          <div class="character-subtitle">Explore a vila, colete símbolos de apoio e ajude outras mulheres a encontrarem proteção.</div>
-          <div class="quest-badge-count" id="menuQuestBadge">Mini Quests: 0 / 3 Colecionadas</div>
-        </div>
-      </div>
-
-      <div class="menu-right-panel">
-        <div class="menu-logo-title">Caminhos da<br>Proteção</div>
-        <button class="menu-btn-nav" id="btnStartGame">Novo Jogo <span>👆</span></button>
-        <button class="menu-btn-nav" id="btnContinue">Continuar <span>▶</span></button>
-        <button class="menu-btn-nav" id="btnLoad">Carregar <span>📜</span></button>
-        <button class="menu-btn-nav" id="btnCode">Código de Proteção <span>🗝️</span></button>
-        <button class="menu-btn-nav" id="btnOptions">Opções <span>⚙️</span></button>
-        <button class="menu-btn-nav" id="btnExit">Sair <span>🚪</span></button>
-      </div>
-    </div>
-
-    <!-- MUTE/AUDIO BUTTON -->
-    <button id="audioToggle" title="Alternar Som">🔊</button>
-
     <canvas id="world" width="960" height="640"></canvas>
     <canvas id="feedbackFlash" width="960" height="640"></canvas>
 
@@ -541,47 +361,6 @@
 "use strict";
 
 /* ============================================================
-   SISTEMA DE ÁUDIO
-============================================================ */
-let audioMuted = false;
-const bgMenu = new Audio("menu.mp3");
-bgMenu.loop = true;
-const bgJogo = new Audio("jogo.mp3");
-bgJogo.loop = true;
-
-function playAudio(audio) {
-  if (!audioMuted) {
-    audio.play().catch(() => {});
-  }
-}
-
-function stopAudio(audio) {
-  audio.pause();
-  audio.currentTime = 0;
-}
-
-const audioToggleBtn = document.getElementById('audioToggle');
-audioToggleBtn.addEventListener('click', () => {
-  audioMuted = !audioMuted;
-  audioToggleBtn.textContent = audioMuted ? '🔇' : '🔊';
-  if (audioMuted) {
-    bgMenu.pause();
-    bgJogo.pause();
-  } else {
-    if (gameState === 'menu') playAudio(bgMenu);
-    else playAudio(bgJogo);
-  }
-});
-
-/* ============================================================
-   CARREGAMENTO DE SPRITES
-============================================================ */
-const playerSprite = new Image();
-playerSprite.src = '3.png';
-let spriteLoaded = false;
-playerSprite.onload = () => { spriteLoaded = true; };
-
-/* ============================================================
    CONFIG & CONSTANTS
 ============================================================ */
 const COLORS = {
@@ -598,6 +377,7 @@ const TILE = 40;
 
 const KEYS = {};
 let touchDir = {x:0,y:0};
+let touchInteractPressed = false;
 
 /* ============================================================
    CANVAS SETUP
@@ -610,10 +390,11 @@ const mmCanvas = document.getElementById('minimapCanvas');
 const mmCtx = mmCanvas.getContext('2d');
 
 /* ============================================================
-   WORLD GEOMETRY
+   WORLD GEOMETRY: obstacles (solid rects), decorations
 ============================================================ */
+// Each obstacle: {x,y,w,h,type} type used for rendering
 const obstacles = [];
-const decorations = [];
+const decorations = []; // non-solid visuals (flowers, small grass tufts)
 
 function addBuilding(x,y,w,h,roofColor,wallColor,label){
   obstacles.push({x,y,w,h,type:'building',roofColor,wallColor,label});
@@ -631,13 +412,13 @@ function addWaterPond(x,y,w,h){
   obstacles.push({x,y,w,h,type:'water'});
 }
 
-// Boundaries
+// Outer boundary walls (invisible-ish hedge)
 obstacles.push({x:-40,y:-40,w:WORLD_W+80,h:40,type:'hedge'});
 obstacles.push({x:-40,y:WORLD_H,w:WORLD_W+80,h:40,type:'hedge'});
 obstacles.push({x:-40,y:-40,w:40,h:WORLD_H+80,type:'hedge'});
 obstacles.push({x:WORLD_W,y:-40,w:40,h:WORLD_H+80,type:'hedge'});
 
-// Buildings
+// Buildings: village houses forming a loose plaza
 addBuilding(160,140,220,150,COLORS.goldDim,'#4b3468','Casa de Apoio');
 addBuilding(1360,150,230,160,'#8a5a9c','#3a2554','Trabalho / Escritório');
 addBuilding(140,900,240,170,'#5c8f6a','#2b4a37','Casa de Mariana');
@@ -645,10 +426,10 @@ addBuilding(1340,880,260,180,'#c98b4d','#5c3a24','Delegacia da Mulher (DEAM)');
 addBuilding(750,90,260,140,'#7a6fb0','#33254f','Centro Comunitário');
 addBuilding(760,1040,240,150,'#4d7a95','#22384a','Casa de Juliana');
 
-// Fountain
+// A central well / fountain landmark
 obstacles.push({x:860,y:560,w:60,h:60,type:'fountain'});
 
-// Trees
+// Trees scattered around
 const treeSpots = [
   [80,340],[120,420],[80,520],[60,650],[100,760],
   [420,140],[500,120],[600,150],[420,900],[500,970],[600,1010],
@@ -662,7 +443,7 @@ treeSpots.forEach(([x,y])=>addTree(x,y));
 // Rocks
 [[220,600],[1500,200],[600,1150],[1300,1100],[250,1000]].forEach(([x,y])=>addRock(x,y));
 
-// Fences
+// Fences around plaza garden
 addFence(760,470,240,14);
 addFence(760,470,14,110);
 addFence(986,470,14,110);
@@ -670,7 +451,7 @@ addFence(986,470,14,110);
 // Pond
 addWaterPond(1180,700,160,110);
 
-// Flowers
+// Decorative flowers (non-solid)
 for(let i=0;i<70;i++){
   decorations.push({
     x: 60+Math.random()*(WORLD_W-120),
@@ -681,49 +462,31 @@ for(let i=0;i<70;i++){
 }
 
 /* ============================================================
-   MINI QUESTS / COLECIONÁVEIS ESPALHADOS PELO MAPA
-============================================================ */
-const miniQuests = [
-  {
-    id: 'telefones', x: 880, y: 500, collected: false, icon: '📞', title: 'Símbolo do Disque 180',
-    desc: 'Você encontrou um Ponto de Apoio! Lembre-se: O Disque 180 é um serviço gratuito, anônimo e essencial para denúncias e acolhimento.'
-  },
-  {
-    id: 'escudo', x: 200, y: 500, collected: false, icon: '🛡️', title: 'Escudo de Proteção',
-    desc: 'Você achou o Escudo do Conhecimento! Conhecer a Lei Maria da Penha é a maior defesa contra relacionamentos abusivos.'
-  },
-  {
-    id: 'chave', x: 1400, y: 500, collected: false, icon: '🔑', title: 'Chave da Autonomia',
-    desc: 'Você encontrou a Chave da Autonomia! A independência econômica e o apoio emocional são fundamentais para recomeçar.'
-  }
-];
-
-/* ============================================================
-   NPCs REFINADOS
+   NPCs
 ============================================================ */
 const npcs = [
   {
-    id:'juliana', name:'Juliana', x:860, y:1020, w:34, h:42, color:'#e58fb0',
-    clothing:'#8e44ad', phase:1, done:false, talked:false
+    id:'juliana', name:'Juliana', x:860, y:1020, w:30,h:38, color:'#e58fb0',
+    phase:1, done:false,
+    talked:false
   },
   {
-    id:'mariana', name:'Mariana', x:260, y:940, w:34, h:42, color:'#7fd6c4',
-    clothing:'#16a085', phase:2, done:false, talked:false
+    id:'mariana', name:'Mariana', x:260, y:940, w:30,h:38, color:'#7fd6c4',
+    phase:2, done:false,
+    talked:false
   },
   {
-    id:'guia', name:'Guia de Proteção', x:1460, y:920, w:36, h:44, color:'#e8c468',
-    clothing:'#d35400', phase:3, done:false, talked:false
+    id:'guia', name:'Guia de Proteção', x:1460, y:920, w:32,h:40, color:'#e8c468',
+    phase:3, done:false,
+    talked:false
   }
 ];
 
 /* ============================================================
-   PLAYER COM MECÂNICA DE SPRINT
+   PLAYER
 ============================================================ */
 const player = {
-  x: 900, y: 650, w:32, h:44,
-  baseSpeed: 2.8,
-  sprintSpeed: 4.8,
-  speed: 2.8,
+  x: 900, y: 650, w:28, h:36, speed: 2.6,
   dir:'down', moving:false, animT:0
 };
 
@@ -747,18 +510,23 @@ function rectsOverlap(a,b){
 function collidesWorld(px,py,pw,ph){
   const box = {x:px,y:py,w:pw,h:ph};
   for(const o of obstacles){
+    if(o.type==='fountain'){
+      // circular-ish collision approx via rect but slightly inset
+    }
     const solid = {x:o.x, y:o.y + (o.type==='building'?o.h*0.55:0), w:o.w, h: o.type==='building'? o.h*0.45 : o.h};
     if(o.type==='hedge'){ solid.y=o.y; solid.h=o.h; }
     if(o.type==='tree'){ solid.x=o.x+6; solid.y=o.y+18; solid.w=o.w-12; solid.h=o.h-14; }
-    if(o.type==='rock'||o.type==='fence'||o.type==='water'||o.type==='fountain'){
-      solid.x=o.x; solid.y=o.y; solid.w=o.w; solid.h=o.h;
-    }
+    if(o.type==='rock'){ solid.x=o.x; solid.y=o.y; solid.w=o.w; solid.h=o.h; }
+    if(o.type==='fence'){ solid.x=o.x; solid.y=o.y; solid.w=o.w; solid.h=o.h; }
+    if(o.type==='water'){ solid.x=o.x; solid.y=o.y; solid.w=o.w; solid.h=o.h; }
+    if(o.type==='fountain'){ solid.x=o.x; solid.y=o.y; solid.w=o.w; solid.h=o.h; }
     if(rectsOverlap(box, solid)) return true;
   }
   return false;
 }
 
 function tryMove(dx,dy){
+  // move on each axis separately for smooth wall sliding
   if(dx!==0){
     const nx = player.x + dx;
     if(!collidesWorld(nx, player.y, player.w, player.h)){
@@ -810,8 +578,12 @@ function drawParticles(){
 }
 
 /* ============================================================
-   EDUCATIONAL CARD MODAL
+   EDUCATIONAL CONTENT (Lei Maria da Penha)
 ============================================================ */
+const CARD = {
+  title(t){ document.getElementById('cardTitle').textContent = t; },
+};
+
 function showEduCard({tag, title, bodyHTML, lawHTML, onClose}){
   document.getElementById('cardTag').textContent = tag;
   document.getElementById('cardTitle').textContent = title;
@@ -835,9 +607,9 @@ const dlgText = document.getElementById('dlgText');
 const dlgChoices = document.getElementById('dlgChoices');
 const dlgContinueHint = document.getElementById('dlgContinueHint');
 
-let gameState = 'menu'; // menu | explore | dialogue | card | win
+let gameState = 'explore'; // explore | dialogue | card | win
 let currentNPC = null;
-let dialogueQueue = [];
+let dialogueQueue = [];   // array of node objects to step through
 let dialogueIndex = 0;
 let typewriterTimer = null;
 let typewriterDone = false;
@@ -861,7 +633,7 @@ function closeDialogue(){
 function playNode(){
   const node = dialogueQueue[dialogueIndex];
   if(!node){ closeDialogue(); return; }
-  dlgName.textContent = node.speaker || (currentNPC ? currentNPC.name : "Sistema");
+  dlgName.textContent = node.speaker || currentNPC.name;
   dlgChoices.innerHTML = '';
   dlgContinueHint.style.display = 'none';
   awaitingChoice = false;
@@ -912,6 +684,7 @@ function typewriteText(full, onDone){
 
 function advanceDialogue(){
   if(!typewriterDone){
+    // skip to full text instantly
     clearInterval(typewriterTimer);
     const node = dialogueQueue[dialogueIndex];
     dlgText.textContent = node.text;
@@ -937,13 +710,13 @@ function advanceDialogue(){
     }
     return;
   }
-  if(awaitingChoice) return;
+  if(awaitingChoice) return; // must click a choice
   dialogueIndex++;
   playNode();
 }
 
 /* ============================================================
-   PROGRESSO E FASES DO JOGO
+   PHASE CONTENT — FASE 1: Violências Invisíveis (Juliana)
 ============================================================ */
 function flashFeedback(good){
   fctx.clearRect(0,0,VIEW_W,VIEW_H);
@@ -989,6 +762,7 @@ function updateObjectiveText(){
   el.textContent = 'Jornada concluída! Obrigada por caminhar até aqui. 💜';
 }
 
+/* --- FASE 1 dialogue tree --- */
 function fase1Nodes(npc){
   return [
     { text:"Oi... que bom te ver. Posso te contar uma coisa que aconteceu comigo no trabalho hoje?" },
@@ -1000,7 +774,7 @@ function fase1Nodes(npc){
         { label:"Isso é só uma reunião estressante, nada demais.", next:8 }
       ]
     },
-    {},
+    {}, // placeholder unused
     {
       text:"Exatamente! Interromper repetidamente para 'explicar' o que uma mulher já disse é 'manterrupting', e presumir que ela precisa da explicação é 'mansplaining'.",
       choices:[{ label:"Ver explicação completa", action:()=>showFase1Card('mansplaining', npc), endDialogue:true }]
@@ -1023,23 +797,24 @@ function showFase1Card(kind, npc){
     mansplaining:{
       tag:'Fase 1 · Violências Invisíveis',
       title:'🗣️ Mansplaining & Manterrupting',
-      bodyHTML: `<b>Mansplaining</b> é quando alguém explica algo a uma mulher em tom condescendente, presumindo que ela não entende o próprio assunto.<br><br>
-      <b>Manterrupting</b> é a interrupção repetida e desnecessária da fala de mulheres.<br><br>
-      Quando <b>reiterados e sistemáticos</b>, contribuem para a desigualdade e violência psicológica.`,
-      lawHTML: `📖 Art. 7º, II da Lei Maria da Penha (Lei nº 11.340/2006).`
+      bodyHTML: `<b>Mansplaining</b> é quando alguém (geralmente um homem) explica algo a uma mulher em tom condescendente, presumindo que ela não entende o próprio assunto — mesmo quando ela é a especialista.<br><br>
+      <b>Manterrupting</b> é a interrupção repetida e desnecessária da fala de mulheres, negando seu turno de voz.<br><br>
+      Isoladamente podem parecer "só uma atitude chata", mas quando <b>reiterados e sistemáticos</b>, contribuem para um ambiente de desigualdade e podem se somar a quadros de violência psicológica e assédio moral, especialmente em relações de poder (trabalho, família, relacionamento).`,
+      lawHTML: `📖 A Lei nº 11.340/2006 (Lei Maria da Penha), no <b>Art. 7º, II</b>, define violência psicológica como qualquer conduta que cause dano emocional, diminuição da autoestima, prejudique o pleno desenvolvimento ou vise degradar/controlar ações, comportamentos, crenças e decisões da mulher.`
     },
     gaslighting:{
       tag:'Fase 1 · Violências Invisíveis',
       title:'🌀 Gaslighting',
-      bodyHTML: `<b>Gaslighting</b> é uma forma de manipulação psicológica em que o agressor faz a vítima duvidar da própria percepção, memória ou sanidade.<br><br>
-      Corrói a autoconfiança e a autonomia ao longo do tempo.`,
-      lawHTML: `📖 Art. 7º, II da Lei Maria da Penha - Violência Psicológica.`
+      bodyHTML: `<b>Gaslighting</b> é uma forma de manipulação psicológica em que o agressor faz a vítima duvidar da própria percepção, memória ou sanidade — repetindo frases como "isso nunca aconteceu" ou "você está exagerando/é louca".<br><br>
+      É uma violência <b>silenciosa e cumulativa</b>: não deixa marcas visíveis, mas corrói a autoconfiança e a autonomia da pessoa ao longo do tempo, dificultando que ela reconheça que está sendo violentada.`,
+      lawHTML: `📖 O <b>Art. 7º, II</b> da Lei Maria da Penha tipifica como violência psicológica qualquer conduta que cause dano emocional e diminuição da autoestima, ou que vise degradar ou controlar as ações da mulher — o que inclui manipulações como o gaslighting.`
     },
     geral:{
       tag:'Fase 1 · Violências Invisíveis',
-      title:'🔍 Violências Invisíveis',
-      bodyHTML: `Nem toda violência deixa marcas físicas. Interromper e desqualificar sistematicamente desgastam a autoestima e a autonomia.`,
-      lawHTML: `📖 Lei nº 11.340/2006 (Lei Maria da Penha).`
+      title:'🔍 Violências que não deixam marcas visíveis',
+      bodyHTML: `Nem toda violência deixa hematomas. Interromper sistematicamente, desqualificar opiniões, fazer alguém duvidar da própria memória (gaslighting) ou "explicar" algo que a pessoa já domina (mansplaining) são <b>microagressões</b> que, quando repetidas, desgastam a autoestima e a autonomia.<br><br>
+      Reconhecer esses padrões é o primeiro passo para nomeá-los e buscar apoio.`,
+      lawHTML: `📖 O <b>Art. 7º, II</b> da Lei nº 11.340/2006 reconhece a violência psicológica como categoria própria, ao lado da física, sexual, patrimonial e moral (Art. 7º, I a V).`
     }
   };
   const c = cards[kind];
@@ -1049,33 +824,39 @@ function showFase1Card(kind, npc){
   });
 }
 
+/* ============================================================
+   FASE 2: Ciclo da Violência (Mariana) — 3 mini perguntas
+============================================================ */
 function fase2Nodes(npc){
   return [
-    { text:"Oi. Estudei sobre o 'Ciclo da Violência'. Quer aprender as três fases comigo?",
+    { text:"Oi. Estudei sobre o chamado 'Ciclo da Violência'. Ele tem três fases que se repetem. Quer aprender comigo?",
       choices:[{ label:"Quero sim.", next:1 }] },
-    { text:"Fase A: 'Ele andava tenso, criticava tudo, o clima em casa ficava pesado...' A qual fase isso pertence?",
+    { text:"Fase A: 'Ele andava tenso, criticava tudo, o clima em casa ficava pesado e eu tentava não fazer nada errado para não irritá-lo.' A qual fase isso pertence?",
       choices:[
         { label:"Aumento da Tensão", action:()=>{flashFeedback(true);}, next:3 },
         { label:"Explosão (Ato de Violência)", action:()=>{flashFeedback(false);}, next:2 },
         { label:"Lua de Mel (Reconciliação)", action:()=>{flashFeedback(false);}, next:2 }
       ]},
-    { text:"Isso descreve o clima de medo ANTES da explosão — é o Aumento da Tensão.", next:3 },
-    { text:"Fase B: 'Depois de dias tensos, aconteceu uma briga grave — gritos e agressão.' Qual fase é essa?",
+    { text:"Quase! Isso descreve o clima de medo e cuidado excessivo ANTES do episódio — é a fase de Aumento da Tensão. Vamos para a próxima.",
+      next:3 },
+    { text:"Fase B: 'Depois de dias tensos, aconteceu uma briga grave — gritos, humilhações, e eu me senti em perigo.' Qual fase é essa?",
       choices:[
         { label:"Aumento da Tensão", action:()=>{flashFeedback(false);}, next:4 },
         { label:"Explosão (Ato de Violência)", action:()=>{flashFeedback(true);}, next:5 },
         { label:"Lua de Mel (Reconciliação)", action:()=>{flashFeedback(false);}, next:4 }
       ]},
-    { text:"A Explosão é quando a violência realmente se concretiza.", next:6 },
-    { text:"Fase C: 'No dia seguinte ele chorou, pediu desculpas e prometeu mudar.' Qual fase é essa?",
+    { text:"Essa é justamente a fase de Aumento da Tensão que vimos — a Explosão é quando a violência realmente acontece (física, verbal, sexual ou psicológica). Vamos ver a próxima descrição.",
+      next:6 },
+    { text:"Fase C: 'No dia seguinte ele chorou, pediu desculpas, trouxe flores e prometeu que nunca mais aconteceria.' Qual fase é essa?",
       choices:[
         { label:"Aumento da Tensão", action:()=>{flashFeedback(false);}, next:6 },
         { label:"Explosão (Ato de Violência)", action:()=>{flashFeedback(false);}, next:6 },
         { label:"Lua de Mel (Reconciliação)", action:()=>{flashFeedback(true);}, next:7 }
       ]},
-    { text:"Essa é a fase de Lua de Mel.", next:7 },
-    { text:"Exato! O arrependimento temporário caracteriza a Lua de Mel.",
-      choices:[{ label:"Ver explicação do ciclo", action:()=>showFase2Card(npc), endDialogue:true }] }
+    { text:"Essa descrição de arrependimento e promessas é justamente a fase de Lua de Mel. Ela geralmente vem depois da explosão.",
+      next:9 },
+    { text:"Isso mesmo! Essa é a fase de Lua de Mel — carinho, desculpas e promessas de mudança, o que muitas vezes faz a vítima acreditar que o ciclo não vai se repetir.",
+      choices:[{ label:"Ver explicação completa do ciclo", action:()=>showFase2Card(npc), endDialogue:true }] }
   ];
 }
 
@@ -1083,44 +864,54 @@ function showFase2Card(npc){
   showEduCard({
     tag:'Fase 2 · Ciclo da Violência',
     title:'🔄 O Ciclo da Violência',
-    bodyHTML: `<b>1. Aumento da Tensão</b><br><b>2. Explosão</b><br><b>3. Lua de Mel</b><br><br>Reconhecer esse ciclo é fundamental para quebrar a espiral com apoio externo.`,
-    lawHTML: `📖 Medidas Protetivas de Urgência (Art. 22) podem ser pedidas a qualquer momento.`,
+    bodyHTML: `A psicóloga Lenore Walker descreveu um padrão que se repete em muitos relacionamentos abusivos, em três momentos:<br><br>
+    <b>1. Aumento da tensão</b> — irritabilidade, críticas, clima de medo e cautela.<br>
+    <b>2. Explosão (ato de violência)</b> — o episódio de agressão física, verbal, psicológica, sexual ou patrimonial.<br>
+    <b>3. Lua de mel (reconciliação)</b> — arrependimento, carinho e promessas de mudança, que tendem a se enfraquecer com o tempo, reiniciando o ciclo.<br><br>
+    Reconhecer esse padrão ajuda a entender por que é tão difícil romper o ciclo sozinha — e por que buscar apoio externo é tão importante, <b>independente da fase em que a mulher se encontra</b>.`,
+    lawHTML: `📖 A Lei Maria da Penha permite que <b>Medidas Protetivas de Urgência</b> (Art. 22) sejam solicitadas a qualquer momento do ciclo — não é preciso esperar uma nova explosão para buscar proteção.`,
     onClose:()=>{ markPhaseDone(2, npc); }
   });
 }
 
+/* ============================================================
+   FASE 3: Redes de Apoio e Direitos (Guia de Proteção)
+============================================================ */
 function fase3Nodes(npc){
   return [
-    { text:"Olá! Eu sou a Guia de Proteção na DEAM. Por qual canal de apoio deseja começar?",
+    { text:"Olá! Eu sou a Guia de Proteção. Aqui na Delegacia da Mulher você pode conhecer os principais caminhos de apoio previstos em lei. Por onde quer começar?",
       choices:[
-        { label:"Disque 180", next:1 },
-        { label:"Delegacia da Mulher (DEAM)", next:3 },
-        { label:"Medidas Protetivas", next:5 }
+        { label:"O que é o Disque 180?", next:1 },
+        { label:"O que faz a DEAM?", next:3 },
+        { label:"O que são Medidas Protetivas?", next:5 }
       ]
     },
-    { text:"O Disque 180 é gratuito, sigiloso e funciona 24h por dia em todo o Brasil.",
-      choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
+    { text:"O Disque 180 é a Central de Atendimento à Mulher: liga-se gratuitamente, 24h por dia, de qualquer lugar do Brasil, para relatar violência, pedir orientação ou apoio psicológico.",
+      choices:[{label:"Entendi, e a DEAM?", next:3},{label:"E as Medidas Protetivas?", next:5},{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
     {},
-    { text:"A DEAM oferece atendimento especializado para registro de ocorrência e proteção.",
-      choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
+    { text:"A DEAM (Delegacia Especializada de Atendimento à Mulher) é onde o Boletim de Ocorrência é registrado, com atendimento voltado à acolher mulheres em situação de violência.",
+      choices:[{label:"E o Disque 180?", next:1},{label:"E as Medidas Protetivas?", next:5},{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
     {},
-    { text:"Medidas Protetivas são decisões judiciais urgentes para afastar o agressor.",
-      choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]}
+    { text:"As Medidas Protetivas de Urgência (Art. 22 da Lei 11.340/2006) são decisões judiciais rápidas — como afastamento do agressor do lar e proibição de aproximação — para proteger a mulher enquanto o processo corre.",
+      choices:[{label:"E o Disque 180?", next:1},{label:"E a DEAM?", next:3},{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]}
   ];
 }
 
 function showFase3Card(npc){
   showEduCard({
     tag:'Fase 3 · Redes de Apoio e Direitos',
-    title:'🛡️ Rede de Apoio e Direitos',
-    bodyHTML: `<b>Disque 180:</b> Atendimento 24h gratuito.<br><b>DEAM:</b> Delegacia Especializada.<br><b>Medidas Protetivas:</b> Afastamento do agressor e restrição de aproximação.`,
-    lawHTML: `📖 Lei nº 11.340/2006 - Maria da Penha.`,
+    title:'🛡️ Rede de Apoio prevista em Lei',
+    bodyHTML: `<b>Disque 180</b> — Central de Atendimento à Mulher, gratuita e sigilosa, 24h, para denúncias, orientação e encaminhamento.<br><br>
+    <b>DEAM (Delegacia da Mulher)</b> — unidade policial especializada para registrar o Boletim de Ocorrência e iniciar a investigação.<br><br>
+    <b>Medidas Protetivas de Urgência</b> — previstas no <b>Art. 22</b> da Lei 11.340/2006, podem incluir afastamento do agressor do lar, proibição de aproximação e contato, e suspensão de posse de armas — concedidas em prazo célere pelo juiz, muitas vezes em até 48h.<br><br>
+    Também existem a <b>Patrulha Maria da Penha</b> (rondas de fiscalização das medidas protetivas) e, em algumas cidades, o <b>botão do pânico</b>.`,
+    lawHTML: `📖 A Lei nº 11.340/2006 leva o nome de Maria da Penha Maia Fernandes, cujo caso levou o Brasil a ser condenado pela Comissão Interamericana de Direitos Humanos e motivou a criação da lei em 2006.`,
     onClose:()=>{ markPhaseDone(3, npc); }
   });
 }
 
 /* ============================================================
-   INTERACTION LOGIC (NPCs & MINI QUESTS)
+   INTERACTION LOGIC
 ============================================================ */
 function nearestNPCInRange(){
   let best=null, bestDist=Infinity;
@@ -1128,19 +919,7 @@ function nearestNPCInRange(){
   npcs.forEach(n=>{
     const nc = {x:n.x+n.w/2, y:n.y+n.h/2};
     const d = Math.hypot(pc.x-nc.x, pc.y-nc.y);
-    if(d<65 && d<bestDist){ bestDist=d; best=n; }
-  });
-  return best;
-}
-
-function nearestQuestItemInRange(){
-  let best=null, bestDist=Infinity;
-  const pc = {x:player.x+player.w/2, y:player.y+player.h/2};
-  miniQuests.forEach(q=>{
-    if(!q.collected){
-      const d = Math.hypot(pc.x-q.x, pc.y-q.y);
-      if(d<55 && d<bestDist){ bestDist=d; best=q; }
-    }
+    if(d<60 && d<bestDist){ bestDist=d; best=n; }
   });
   return best;
 }
@@ -1155,31 +934,14 @@ function startInteraction(npc){
   else if(npc.phase===2) openDialogue(npc, fase2Nodes(npc));
   else if(npc.phase===3) openDialogue(npc, fase3Nodes(npc));
 }
-
-function collectMiniQuest(q){
-  q.collected = true;
-  flashFeedback(true);
-  spawnParticles(q.x, q.y, COLORS.gold, 30);
-  const collectedCount = miniQuests.filter(mq=>mq.collected).length;
-  document.getElementById('menuQuestBadge').textContent = `Mini Quests: ${collectedCount} / 3 Colecionadas`;
-  
-  showEduCard({
-    tag: 'Mini Quest · Colecionável Encontrado!',
-    title: `${q.icon} ${q.title}`,
-    bodyHTML: q.desc,
-    lawHTML: '✨ Item adicionado ao seu conhecimento coletivo!',
-    onClose: ()=> { gameState = 'explore'; }
-  });
-}
-
 function doneLine(npc){
-  if(npc.id==='juliana') return "Obrigada por me ouvir. Saber nomear o que sinto me fortalece.";
-  if(npc.id==='mariana') return "Buscar ajuda vale a qualquer momento do ciclo de violência.";
-  return "Se precisar de ajuda, ligue 180. Você não está sozinha.";
+  if(npc.id==='juliana') return "Obrigada por me ouvir. Agora eu sei nomear o que sinto — isso já é força.";
+  if(npc.id==='mariana') return "Lembre-se: buscar ajuda vale em qualquer fase do ciclo, não só depois de uma explosão.";
+  return "Se precisar, ligue 180. Você não está sozinha.";
 }
 
 /* ============================================================
-   CONTROLES DE ENTRADA & SPRINT
+   INPUT
 ============================================================ */
 window.addEventListener('keydown', e=>{
   KEYS[e.code] = true;
@@ -1189,9 +951,6 @@ window.addEventListener('keydown', e=>{
     return;
   }
   if(gameState==='explore' && (e.code==='Space' || e.code==='KeyE')){
-    const q = nearestQuestItemInRange();
-    if(q) { collectMiniQuest(q); return; }
-    
     const npc = nearestNPCInRange();
     if(npc) startInteraction(npc);
   }
@@ -1201,75 +960,36 @@ window.addEventListener('keydown', e=>{
 });
 window.addEventListener('keyup', e=>{ KEYS[e.code]=false; });
 
-/* Menu Interações (Fiéis ao Layout Solicitado) */
-document.getElementById('btnStartGame').addEventListener('click', ()=>{
-  document.getElementById('mainMenu').classList.add('hidden');
-  stopAudio(bgMenu);
-  playAudio(bgJogo);
-  gameState = 'explore';
-});
-
-document.getElementById('btnContinue').addEventListener('click', ()=>{
-  document.getElementById('btnStartGame').click();
-});
-
-document.getElementById('btnLoad').addEventListener('click', ()=>{
-  alert("Não há jogos salvos no momento. Iniciando um novo caminho.");
-  document.getElementById('btnStartGame').click();
-});
-
-document.getElementById('btnCode').addEventListener('click', ()=>{
-  const code = prompt("Digite o Código de Proteção:");
-  if(code === "180"){
-    alert("Código Aceito! Você ganhou o título 'Protetora de Direitos'.");
-  } else if(code){
-    alert("Código Inválido. Tente usar '180'.");
-  }
-});
-
-document.getElementById('btnOptions').addEventListener('click', ()=>{
-  alert("Opções de Jogo:\n- Tecla Shift: Correr (Sprint)\n- Teclas W,A,S,D ou Setas: Movimentação\n- Tecla E ou Espaço: Interagir / Falar");
-});
-
-document.getElementById('btnExit').addEventListener('click', ()=>{
-  alert("Obrigado por jogar Caminhos da Proteção!");
-});
-
-/* Touch Mobile */
+// Touch controls
 function bindHold(id, fn){
   const el = document.getElementById(id);
   const start=(ev)=>{ ev.preventDefault(); fn(1); };
   const end=(ev)=>{ ev.preventDefault(); fn(0); };
-  el.addEventListener('touchstart', start); el.addEventListener('touchend', end);
-  el.addEventListener('mousedown', start); el.addEventListener('mouseup', end); el.addEventListener('mouseleave', end);
+  el.addEventListener('touchstart', start);
+  el.addEventListener('touchend', end);
+  el.addEventListener('mousedown', start);
+  el.addEventListener('mouseup', end);
+  el.addEventListener('mouseleave', end);
 }
 bindHold('tUp', v=>touchDir.y = v? -1 : (touchDir.y<0?0:touchDir.y));
 bindHold('tDown', v=>touchDir.y = v? 1 : (touchDir.y>0?0:touchDir.y));
 bindHold('tLeft', v=>touchDir.x = v? -1 : (touchDir.x<0?0:touchDir.x));
 bindHold('tRight', v=>touchDir.x = v? 1 : (touchDir.x>0?0:touchDir.x));
+document.getElementById('touchInteract').addEventListener('touchstart', e=>{
+  e.preventDefault();
+  if(gameState==='dialogue') advanceDialogue();
+  else if(gameState==='explore'){ const n=nearestNPCInRange(); if(n) startInteraction(n); }
+});
 document.getElementById('touchInteract').addEventListener('click', ()=>{
   if(gameState==='dialogue') advanceDialogue();
-  else if(gameState==='explore'){
-    const q=nearestQuestItemInRange(); if(q){ collectMiniQuest(q); return; }
-    const n=nearestNPCInRange(); if(n) startInteraction(n);
-  }
+  else if(gameState==='explore'){ const n=nearestNPCInRange(); if(n) startInteraction(n); }
 });
 
 /* ============================================================
-   UPDATE LOOP COM DELTA TIME E SPRINT
+   UPDATE LOOP
 ============================================================ */
-let lastTime = performance.now();
-
-function update(dt){
-  if(gameState==='menu'){
-    playAudio(bgMenu);
-    return;
-  }
-
+function update(){
   if(gameState==='explore'){
-    // Mecânica de Sprint com a tecla Shift
-    player.speed = KEYS['ShiftLeft'] || KEYS['ShiftRight'] ? player.sprintSpeed : player.baseSpeed;
-
     let dx=0, dy=0;
     if(KEYS['KeyW']||KEYS['ArrowUp']) dy-=1;
     if(KEYS['KeyS']||KEYS['ArrowDown']) dy+=1;
@@ -1283,18 +1003,18 @@ function update(dt){
     player.moving = moving;
     if(moving){
       const len = Math.hypot(dx,dy) || 1;
-      const vx = (dx/len) * player.speed * (dt * 60);
-      const vy = (dy/len) * player.speed * (dt * 60);
+      const vx = (dx/len)*player.speed;
+      const vy = (dy/len)*player.speed;
       tryMove(vx,vy);
       if(Math.abs(dx) > Math.abs(dy)) player.dir = dx>0?'right':'left';
       else if(dy!==0) player.dir = dy>0?'down':'up';
-      player.animT += dt * 10;
+      player.animT += 0.25;
     }
 
-    const nearNpc = nearestNPCInRange();
-    const nearQuest = nearestQuestItemInRange();
+    // interaction prompt
+    const near = nearestNPCInRange();
     const prompt = document.getElementById('interactPrompt');
-    if((nearNpc && !nearNpc.done) || nearQuest) prompt.classList.add('show');
+    if(near && !near.done) prompt.classList.add('show');
     else prompt.classList.remove('show');
   }
   updateCamera();
@@ -1302,12 +1022,16 @@ function update(dt){
 }
 
 /* ============================================================
-   RENDER
+   RENDER: WORLD
 ============================================================ */
 function drawGround(){
+  // base grass gradient
+  const g = ctx.createLinearGradient(0,0,0,VIEW_H);
+  g.addColorStop(0, '#22406a1a');
   ctx.fillStyle = COLORS.forestDark;
   ctx.fillRect(0,0,VIEW_W,VIEW_H);
 
+  // subtle tile texture for grass, only draw visible tiles
   const startX = Math.floor(camera.x/TILE)*TILE;
   const startY = Math.floor(camera.y/TILE)*TILE;
   for(let x=startX; x<camera.x+VIEW_W+TILE; x+=TILE){
@@ -1319,14 +1043,18 @@ function drawGround(){
     }
   }
 
+  // stone paths connecting plaza to houses (simple crosses)
+  ctx.fillStyle = COLORS.path;
   const paths = [
     {x:820,y:0,w:120,h:WORLD_H},
     {x:0,y:600,w:WORLD_W,h:120},
   ];
   paths.forEach(p=>{
+    const sx = p.x-camera.x, sy=p.y-camera.y;
     ctx.fillStyle = COLORS.path;
-    ctx.fillRect(p.x-camera.x, p.y-camera.y, p.w, p.h);
+    ctx.fillRect(sx,sy,p.w,p.h);
   });
+  // path border highlight
   ctx.strokeStyle = COLORS.pathLight;
   ctx.lineWidth=3;
   paths.forEach(p=>{
@@ -1347,29 +1075,6 @@ function drawDecorations(){
   });
 }
 
-function drawMiniQuests(){
-  miniQuests.forEach(q=>{
-    if(q.collected) return;
-    const sx = q.x - camera.x;
-    const sy = q.y - camera.y;
-    if(sx<-40||sy<-40||sx>VIEW_W+40||sy>VIEW_H+40) return;
-
-    const bob = Math.sin(performance.now()/250 + q.x)*4;
-
-    // Brilho dourado
-    ctx.fillStyle = 'rgba(232, 196, 104, 0.25)';
-    ctx.beginPath();
-    ctx.arc(sx, sy+bob, 18, 0, Math.PI*2);
-    ctx.fill();
-
-    // Ícone
-    ctx.font = '20px Segoe UI Emoji, Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(q.icon, sx, sy+bob);
-  });
-}
-
 function roundRect(x,y,w,h,r){
   ctx.beginPath();
   ctx.moveTo(x+r,y);
@@ -1381,6 +1086,7 @@ function roundRect(x,y,w,h,r){
 }
 
 function drawObstacles(){
+  // sort by y for pseudo depth
   const visible = obstacles.filter(o=>{
     const sx=o.x-camera.x, sy=o.y-camera.y;
     return sx>-260 && sy>-260 && sx<VIEW_W+260 && sy<VIEW_H+260 && o.type!=='hedge';
@@ -1388,31 +1094,57 @@ function drawObstacles(){
 
   visible.forEach(o=>{
     const sx=o.x-camera.x, sy=o.y-camera.y;
-    if(o.type==='building') drawBuilding(sx,sy,o.w,o.h,o.roofColor,o.wallColor,o.label);
-    else if(o.type==='tree') drawTree(sx,sy);
-    else if(o.type==='rock') drawRock(sx,sy,o.w,o.h);
-    else if(o.type==='fence') drawFence(sx,sy,o.w,o.h);
-    else if(o.type==='water') drawWater(sx,sy,o.w,o.h);
-    else if(o.type==='fountain') drawFountain(sx,sy,o.w,o.h);
+    if(o.type==='building'){
+      drawBuilding(sx,sy,o.w,o.h,o.roofColor,o.wallColor,o.label);
+    } else if(o.type==='tree'){
+      drawTree(sx,sy);
+    } else if(o.type==='rock'){
+      drawRock(sx,sy,o.w,o.h);
+    } else if(o.type==='fence'){
+      drawFence(sx,sy,o.w,o.h);
+    } else if(o.type==='water'){
+      drawWater(sx,sy,o.w,o.h);
+    } else if(o.type==='fountain'){
+      drawFountain(sx,sy,o.w,o.h);
+    }
   });
 }
 
 function drawBuilding(x,y,w,h,roof,wall,label){
+  // shadow
   ctx.fillStyle='rgba(0,0,0,0.35)';
   roundRect(x+8,y+h-10,w-4,18,8); ctx.fill();
+  // wall
   ctx.fillStyle = wall;
-  roundRect(x, y+h*0.4, w, h*0.6, 10); ctx.fill();
+  roundRect(x, y+h*0.4, w, h*0.6, 10);
+  ctx.fill();
+  // windows
   ctx.fillStyle = 'rgba(232,196,104,0.85)';
-  roundRect(x+16, y+h*0.62, 22, 22, 4); ctx.fill();
-  roundRect(x+w-38, y+h*0.62, 22, 22, 4); ctx.fill();
+  const winY = y+h*0.62;
+  roundRect(x+16, winY, 22, 22, 4); ctx.fill();
+  roundRect(x+w-38, winY, 22, 22, 4); ctx.fill();
+  // door
   ctx.fillStyle = COLORS.nightDeep;
   roundRect(x+w/2-16, y+h-40, 32, 40, 6); ctx.fill();
+  // roof (triangle with rounded feel)
   ctx.fillStyle = roof;
   ctx.beginPath();
-  ctx.moveTo(x-10, y+h*0.42); ctx.lineTo(x+w/2, y-18); ctx.lineTo(x+w+10, y+h*0.42);
-  ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = COLORS.gold; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(x-10, y+h*0.42); ctx.lineTo(x+w+10, y+h*0.42); ctx.stroke();
+  ctx.moveTo(x-10, y+h*0.42);
+  ctx.lineTo(x+w/2, y-18);
+  ctx.lineTo(x+w+10, y+h*0.42);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  ctx.lineWidth=2;
+  ctx.stroke();
+  // roof trim gold line
+  ctx.strokeStyle = COLORS.gold;
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(x-10, y+h*0.42);
+  ctx.lineTo(x+w+10, y+h*0.42);
+  ctx.stroke();
+  // label
   if(label){
     ctx.font = 'bold 12px Trebuchet MS';
     ctx.textAlign='center';
@@ -1426,18 +1158,26 @@ function drawBuilding(x,y,w,h,roof,wall,label){
 function drawTree(x,y){
   ctx.fillStyle='rgba(0,0,0,0.3)';
   ctx.beginPath(); ctx.ellipse(x+17,y+30,14,6,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#5c3a24'; roundRect(x+13,y+16,8,18,3); ctx.fill();
+  // trunk
+  ctx.fillStyle='#5c3a24';
+  roundRect(x+13,y+16,8,18,3); ctx.fill();
+  // foliage layers
   ctx.fillStyle=COLORS.forestLight;
   ctx.beginPath(); ctx.arc(x+17,y+12,16,0,Math.PI*2); ctx.fill();
   ctx.fillStyle=COLORS.forest;
   ctx.beginPath(); ctx.arc(x+9,y+16,11,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(x+25,y+16,11,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(232,196,104,0.25)';
+  ctx.beginPath(); ctx.arc(x+13,y+8,6,0,Math.PI*2); ctx.fill();
 }
 
 function drawRock(x,y,w,h){
   ctx.fillStyle='rgba(0,0,0,0.25)';
   ctx.beginPath(); ctx.ellipse(x+w/2,y+h,w/2,5,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#6b6485'; roundRect(x,y,w,h,8); ctx.fill();
+  ctx.fillStyle='#6b6485';
+  roundRect(x,y,w,h,8); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.12)';
+  roundRect(x+3,y+3,w-16,h/2-2,6); ctx.fill();
 }
 
 function drawFence(x,y,w,h){
@@ -1452,85 +1192,105 @@ function drawFence(x,y,w,h){
 }
 
 function drawWater(x,y,w,h){
-  ctx.fillStyle = COLORS.water; roundRect(x,y,w,h,20); ctx.fill();
-}
-
-function drawFountain(x,y,w,h){
-  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(x+w/2,y+h+4,w/2,6,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#8a7ab5'; ctx.beginPath(); ctx.arc(x+w/2,y+h/2,w/2,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = COLORS.water; ctx.beginPath(); ctx.arc(x+w/2,y+h/2,w/2-8,0,Math.PI*2); ctx.fill();
-}
-
-/* RENDEREZAÇÃO DA PERSONAGEM VIA SPRITE 3.PNG */
-function drawPlayer(){
-  const sx = player.x-camera.x, sy = player.y-camera.y;
-  const bob = player.moving ? Math.sin(player.animT*1.2)*3 : 0;
-
-  // Sombra suave sob a personagem
-  ctx.fillStyle='rgba(0,0,0,0.32)';
-  ctx.beginPath();
-  ctx.ellipse(sx + player.w/2, sy + player.h - 2, player.w*0.4, 5, 0, 0, Math.PI*2);
-  ctx.fill();
-
-  if(spriteLoaded){
-    ctx.save();
-    if(player.dir==='left'){
-      ctx.translate(sx + player.w, sy + bob);
-      ctx.scale(-1, 1);
-      ctx.drawImage(playerSprite, 0, 0, player.w, player.h);
-    } else {
-      ctx.drawImage(playerSprite, sx, sy + bob, player.w, player.h);
-    }
-    ctx.restore();
-  } else {
-    ctx.fillStyle = COLORS.lilac;
-    roundRect(sx, sy+bob, player.w, player.h, 8);
-    ctx.fill();
+  ctx.fillStyle = COLORS.water;
+  roundRect(x,y,w,h,20); ctx.fill();
+  ctx.strokeStyle='rgba(232,196,104,0.3)';
+  ctx.lineWidth=3;
+  roundRect(x,y,w,h,20); ctx.stroke();
+  const t = performance.now()/600;
+  ctx.strokeStyle='rgba(255,255,255,0.15)';
+  ctx.lineWidth=2;
+  for(let i=0;i<3;i++){
+    ctx.beginPath();
+    ctx.moveTo(x+10, y+20+i*25 + Math.sin(t+i)*3);
+    ctx.lineTo(x+w-10, y+20+i*25 + Math.cos(t+i)*3);
+    ctx.stroke();
   }
 }
 
-/* DESENHO DETALHADO DOS NPCS NO CANVAS */
+function drawFountain(x,y,w,h){
+  ctx.fillStyle='rgba(0,0,0,0.3)';
+  ctx.beginPath(); ctx.ellipse(x+w/2,y+h+4,w/2,6,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#8a7ab5';
+  ctx.beginPath(); ctx.arc(x+w/2,y+h/2,w/2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = COLORS.water;
+  ctx.beginPath(); ctx.arc(x+w/2,y+h/2,w/2-8,0,Math.PI*2); ctx.fill();
+  const t = performance.now()/300;
+  ctx.fillStyle='rgba(255,255,255,0.5)';
+  ctx.beginPath(); ctx.arc(x+w/2+Math.sin(t)*3,y+h/2+Math.cos(t)*3,4,0,Math.PI*2); ctx.fill();
+}
+
+/* ---- NPC rendering (rounded vector characters) ---- */
+function drawCharacter(sx, sy, w, h, bodyColor, dir, moving, animT, faceUp){
+  const bob = moving ? Math.sin(animT*4)*2 : 0;
+  const cx = sx + w/2;
+  // shadow
+  ctx.fillStyle='rgba(0,0,0,0.32)';
+  ctx.beginPath(); ctx.ellipse(cx, sy+h+4, w*0.5, 5, 0,0,Math.PI*2); ctx.fill();
+
+  // legs
+  ctx.fillStyle = 'rgba(20,12,35,0.9)';
+  roundRect(cx-8, sy+h-14+bob*0.3, 7, 14, 3); ctx.fill();
+  roundRect(cx+1, sy+h-14+bob*0.3, 7, 14, 3); ctx.fill();
+
+  // body
+  ctx.fillStyle = bodyColor;
+  roundRect(cx-w/2, sy+h*0.28+bob, w, h*0.5, 10);
+  ctx.fill();
+
+  // head
+  ctx.fillStyle = '#f2d2b0';
+  ctx.beginPath();
+  ctx.arc(cx, sy+h*0.2+bob, w*0.42, 0, Math.PI*2);
+  ctx.fill();
+
+  // hair / cap shape simple
+  ctx.fillStyle = 'rgba(40,25,20,0.85)';
+  ctx.beginPath();
+  ctx.arc(cx, sy+h*0.14+bob, w*0.44, Math.PI, 0);
+  ctx.fill();
+
+  // face direction indicator (simple eyes) only when facing down/front
+  if(dir==='down'){
+    ctx.fillStyle='#2a1c3d';
+    ctx.beginPath(); ctx.arc(cx-4, sy+h*0.2+bob, 1.6, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+4, sy+h*0.2+bob, 1.6, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+function drawPlayer(){
+  const sx = player.x-camera.x, sy = player.y-camera.y;
+  drawCharacter(sx, sy, player.w, player.h, COLORS.lilac, player.dir, player.moving, player.animT);
+}
+
 function drawNPCs(){
   npcs.forEach(n=>{
     const sx=n.x-camera.x, sy=n.y-camera.y;
     if(sx<-60||sy<-60||sx>VIEW_W+60||sy>VIEW_H+60) return;
+    drawCharacter(sx, sy, n.w, n.h, n.color, 'down', false, 0);
+    // name tag
+    ctx.font='11px Trebuchet MS';
+    ctx.textAlign='center';
+    ctx.fillStyle='rgba(10,6,20,0.55)';
+    roundRect(sx+n.w/2-34, sy-14, 68, 15, 6); ctx.fill();
+    ctx.fillStyle= n.done ? COLORS.ok : COLORS.cream;
+    ctx.fillText(n.name, sx+n.w/2, sy-3);
 
-    const cx = sx + n.w/2;
-    // Sombra
-    ctx.fillStyle='rgba(0,0,0,0.3)';
-    ctx.beginPath(); ctx.ellipse(cx, sy+n.h, n.w*0.45, 5, 0, 0, Math.PI*2); ctx.fill();
-
-    // Roupas
-    ctx.fillStyle = n.clothing;
-    roundRect(cx - n.w/2, sy + n.h*0.35, n.w, n.h*0.65, 8); ctx.fill();
-
-    // Cabeça / Tom de pele
-    ctx.fillStyle = n.color;
-    ctx.beginPath(); ctx.arc(cx, sy + n.h*0.25, n.w*0.38, 0, Math.PI*2); ctx.fill();
-
-    // Cabelo
-    ctx.fillStyle = '#2c3e50';
-    ctx.beginPath(); ctx.arc(cx, sy + n.h*0.18, n.w*0.4, Math.PI, 0); ctx.fill();
-
-    // Olhos
-    ctx.fillStyle = '#111';
-    ctx.beginPath(); ctx.arc(cx - 4, sy + n.h*0.25, 1.5, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx + 4, sy + n.h*0.25, 1.5, 0, Math.PI*2); ctx.fill();
-
-    // Nome
-    ctx.font='11px Trebuchet MS'; ctx.textAlign='center';
-    ctx.fillStyle='rgba(10,6,20,0.65)';
-    roundRect(sx+n.w/2-36, sy-16, 72, 16, 6); ctx.fill();
-    ctx.fillStyle = n.done ? COLORS.ok : COLORS.cream;
-    ctx.fillText(n.name, sx+n.w/2, sy-4);
-
-    // Indicador dinâmico de interação
+    // indicator bubble
     const bobY = Math.sin(performance.now()/300 + n.x)*3;
     if(!n.done){
-      ctx.font='bold 16px Trebuchet MS'; ctx.fillStyle = COLORS.gold;
+      ctx.font='bold 16px Trebuchet MS';
+      ctx.fillStyle = COLORS.gold;
+      ctx.textAlign='center';
+      ctx.save();
+      ctx.shadowColor='rgba(232,196,104,0.8)';
+      ctx.shadowBlur=8;
       ctx.fillText('(!)', sx+n.w/2, sy-24+bobY);
+      ctx.restore();
     } else {
-      ctx.font='bold 15px Trebuchet MS'; ctx.fillStyle = COLORS.ok;
+      ctx.font='bold 15px Trebuchet MS';
+      ctx.fillStyle = COLORS.ok;
+      ctx.textAlign='center';
       ctx.fillText('✓', sx+n.w/2, sy-22+bobY);
     }
   });
@@ -1549,7 +1309,6 @@ function render(){
   drawGround();
   drawDecorations();
   drawObstacles();
-  drawMiniQuests();
   drawNPCs();
   drawPlayer();
   drawParticles();
@@ -1562,41 +1321,37 @@ function renderMinimap(){
   mmCtx.fillStyle = 'rgba(20,12,35,0.9)';
   mmCtx.fillRect(0,0,140,100);
   const scaleX = 140/WORLD_W, scaleY = 100/WORLD_H;
-
+  // obstacles quick dots (buildings only)
   obstacles.filter(o=>o.type==='building').forEach(o=>{
     mmCtx.fillStyle = 'rgba(232,196,104,0.35)';
     mmCtx.fillRect(o.x*scaleX, o.y*scaleY, Math.max(2,o.w*scaleX), Math.max(2,o.h*scaleY));
   });
   npcs.forEach(n=>{
     mmCtx.fillStyle = n.done ? COLORS.ok : COLORS.gold;
-    mmCtx.beginPath(); mmCtx.arc(n.x*scaleX, n.y*scaleY, 3, 0, Math.PI*2); mmCtx.fill();
-  });
-  miniQuests.forEach(q=>{
-    if(!q.collected){
-      mmCtx.fillStyle = COLORS.gold;
-      mmCtx.fillRect(q.x*scaleX-1, q.y*scaleY-1, 3, 3);
-    }
+    mmCtx.beginPath();
+    mmCtx.arc(n.x*scaleX, n.y*scaleY, 3, 0, Math.PI*2);
+    mmCtx.fill();
   });
   mmCtx.fillStyle = COLORS.lilac;
-  mmCtx.beginPath(); mmCtx.arc(player.x*scaleX, player.y*scaleY, 3.2, 0, Math.PI*2); mmCtx.fill();
+  mmCtx.beginPath();
+  mmCtx.arc(player.x*scaleX, player.y*scaleY, 3.2, 0, Math.PI*2);
+  mmCtx.fill();
+  // viewport rect
   mmCtx.strokeStyle='rgba(255,255,255,0.5)';
+  mmCtx.lineWidth=1;
   mmCtx.strokeRect(camera.x*scaleX, camera.y*scaleY, VIEW_W*scaleX, VIEW_H*scaleY);
 }
 
 /* ============================================================
-   LOOP PRINCIPAL SINCRO COM FPS
+   MAIN LOOP
 ============================================================ */
-function loop(now){
-  const dt = (now - lastTime) / 1000;
-  lastTime = now;
-
-  update(dt);
+function loop(){
+  update();
   render();
   requestAnimationFrame(loop);
 }
-
 updateObjectiveText();
-requestAnimationFrame(loop);
+loop();
 
 })();
 </script>

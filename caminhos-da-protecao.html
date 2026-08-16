@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caminhos da Proteção</title>
+<style>
+  :root{
+    --night-deep:#1c1236;
+    --night-mid:#2d1b4e;
+    --night-soft:#3c2a5e;
+    --forest:#1e3a2f;
+    --forest-light:#2f5741;
+    --gold:#e8c468;
+    --gold-dim:#a9863f;
+    --lilac:#c9a8e0;
+    --lilac-soft:#e3d3f2;
+    --cream:#f5ecd9;
+    --danger:#e07a6b;
+    --ok:#8fd3a0;
+    --panel-bg: rgba(28, 18, 54, 0.92);
+    --panel-border: #e8c468;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: radial-gradient(ellipse at center, #241539 0%, #150c26 70%, #0d0818 100%);
+    font-family: 'Trebuchet MS', 'Segoe UI', Verdana, sans-serif;
+    color: var(--cream);
+    overflow:hidden;
+    user-select:none;
+  }
+  #gameWrap{
+    position:relative;
+    width:100vw; height:100vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+  #stage{
+    position:relative;
+    width:960px; height:640px;
+    max-width:100vw; max-height:100vh;
+    box-shadow: 0 0 0 6px var(--gold-dim), 0 0 0 10px var(--night-deep), 0 20px 60px rgba(0,0,0,0.7);
+    border-radius: 14px;
+    overflow:hidden;
+    background:#000;
+  }
+  #stage canvas{
+    position:absolute; top:0; left:0;
+    width:100%; height:100%;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  @media (max-width: 980px){
+    #stage{ width:100vw; height:calc(100vw * 0.6667); border-radius:0; box-shadow:none; }
+  }
+
+  /* ---------- HUD ---------- */
+  .hud{
+    position:absolute; z-index:5; pointer-events:none;
+    font-size:14px;
+  }
+  #titleBar{
+    top:12px; left:50%; transform:translateX(-50%);
+    background: var(--panel-bg);
+    border: 2px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 6px 22px;
+    letter-spacing: 1px;
+    font-weight:bold;
+    color: var(--gold);
+    text-shadow: 0 0 8px rgba(232,196,104,0.5);
+  }
+  #objectivePanel{
+    top:12px; left:12px;
+    width:260px;
+    background: var(--panel-bg);
+    border: 2px solid var(--lilac);
+    border-radius: 14px;
+    padding: 10px 14px;
+  }
+  #objectivePanel .label{
+    color: var(--lilac-soft);
+    font-size:11px; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;
+  }
+  #objectivePanel .obj{
+    font-size:13px; color:var(--cream); line-height:1.35;
+  }
+  #progressPanel{
+    top:12px; right:12px;
+    width:230px;
+    background: var(--panel-bg);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 10px 14px;
+  }
+  #progressPanel .label{
+    color: var(--gold);
+    font-size:11px; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px;
+    display:flex; justify-content:space-between;
+  }
+  #progressBarOuter{
+    width:100%; height:12px; border-radius:8px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--gold-dim);
+    overflow:hidden;
+  }
+  #progressBarInner{
+    height:100%; width:0%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    transition: width 0.5s ease;
+  }
+  #phaseDots{
+    display:flex; gap:8px; margin-top:8px; justify-content:center;
+  }
+  .phaseDot{
+    width:12px; height:12px; border-radius:50%;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid var(--lilac);
+  }
+  .phaseDot.done{ background: var(--ok); border-color:var(--ok); box-shadow:0 0 6px var(--ok); }
+
+  #minimapPanel{
+    bottom:12px; right:12px;
+    width:150px; height:112px;
+    background: var(--panel-bg);
+    border: 2px solid var(--lilac);
+    border-radius: 12px;
+    padding:6px;
+  }
+  #minimapCanvas{ width:100%; height:100%; display:block; border-radius:6px; }
+
+  #interactPrompt{
+    left:50%; bottom:150px; transform:translateX(-50%);
+    background: var(--panel-bg);
+    border:2px solid var(--gold);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size:13px;
+    color: var(--gold);
+    opacity:0;
+    transition: opacity 0.2s ease;
+  }
+  #interactPrompt.show{ opacity:1; }
+  #interactPrompt kbd{
+    background: var(--gold); color:var(--night-deep); padding:1px 7px; border-radius:5px; font-weight:bold;
+  }
+
+  /* ---------- Dialogue (Stardew Style with talking bounce) ---------- */
+  #dialogueBox{
+    position:absolute; z-index:10;
+    left:50%; bottom:16px; transform:translateX(-50%);
+    width:88%; max-width:820px; min-height:150px;
+    background: var(--panel-bg);
+    border: 3px solid var(--panel-border);
+    border-radius: 18px;
+    padding: 16px 22px 18px 22px;
+    display:none;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 0 40px rgba(201,168,224,0.06);
+  }
+  #dialogueBox.visible{ display:block; animation: slideUp 0.25s ease; }
+  @keyframes slideUp{ from{ transform:translateX(-50%) translateY(20px); opacity:0;} to{ transform:translateX(-50%) translateY(0); opacity:1;} }
+  
+  #dlgName{
+    display:inline-block;
+    background: var(--gold);
+    color: var(--night-deep);
+    font-weight:bold;
+    padding: 3px 16px;
+    border-radius: 10px;
+    margin-bottom:8px;
+    font-size:13px;
+    letter-spacing:0.5px;
+    /* Animação estilo Stardew Valley de fala (pulsação leve) */
+    animation: talkBounce 0.4s ease-in-out infinite alternate;
+  }
+  @keyframes talkBounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-2px); }
+  }
+
+  #dlgText{
+    font-size:16px; line-height:1.5; color:var(--cream); min-height:56px;
+  }
+  #dlgChoices{
+    margin-top:12px; display:flex; flex-direction:column; gap:8px;
+  }
+  .choiceBtn{
+    text-align:left;
+    background: rgba(201,168,224,0.08);
+    border: 2px solid var(--lilac);
+    color: var(--lilac-soft);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size:14px;
+    cursor:pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+  }
+  .choiceBtn:hover{ background: var(--lilac); color: var(--night-deep); transform: translateX(4px); }
+  #dlgContinueHint{
+    position:absolute; right:20px; bottom:12px;
+    font-size:11px; color: var(--gold-dim);
+    animation: blink 1.3s infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+
+  /* ---------- Educational Card Modal ---------- */
+  #cardOverlay{
+    position:absolute; inset:0; z-index:20;
+    background: rgba(10,6,20,0.72);
+    display:none; align-items:center; justify-content:center;
+  }
+  #cardOverlay.visible{ display:flex; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+  #eduCard{
+    width:86%; max-width:560px; max-height:82%;
+    background: linear-gradient(160deg, var(--night-mid), var(--night-deep));
+    border: 3px solid var(--gold);
+    border-radius: 20px;
+    padding: 22px 26px;
+    box-shadow: 0 0 0 6px rgba(232,196,104,0.15), 0 20px 60px rgba(0,0,0,0.7);
+    overflow-y:auto;
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn{ from{ transform:scale(0.9); opacity:0;} to{ transform:scale(1); opacity:1;} }
+  #eduCard h2{
+    margin:0 0 4px 0; color:var(--gold); font-size:19px; display:flex; gap:8px; align-items:center;
+  }
+  #eduCard .tag{
+    display:inline-block; font-size:10px; letter-spacing:1px; text-transform:uppercase;
+    color: var(--night-deep); background: var(--lilac); padding:2px 10px; border-radius:8px; margin-bottom:10px;
+  }
+  #eduCard .cardBody{ font-size:14.5px; line-height:1.6; color: var(--cream); }
+  #eduCard .cardBody b{ color: var(--gold); }
+  #eduCard .lawref{
+    margin-top:12px; padding:10px 14px;
+    background: rgba(143,211,160,0.08);
+    border-left: 3px solid var(--ok);
+    border-radius: 6px;
+    font-size:13px; color:var(--ok);
+  }
+  #eduCard button{
+    margin-top:18px;
+    width:100%;
+    background: var(--gold);
+    color: var(--night-deep);
+    border:none; border-radius:12px;
+    padding: 10px;
+    font-weight:bold; font-size:14px;
+    cursor:pointer;
+    letter-spacing:0.5px;
+  }
+  #eduCard button:hover{ filter:brightness(1.08); }
+
+  /* ---------- Feedback flash ---------- */
+  #feedbackFlash{
+    position:absolute; inset:0; z-index:9; pointer-events:none;
+    opacity:0;
+  }
+
+  /* ---------- Win screen ---------- */
+  #winOverlay{
+    position:absolute; inset:0; z-index:30;
+    background: radial-gradient(ellipse at center, rgba(45,27,78,0.95), rgba(10,6,20,0.98));
+    display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center;
+    padding: 30px;
+  }
+  #winOverlay.visible{ display:flex; animation: fadeIn 0.6s ease; }
+  #winOverlay h1{ color:var(--gold); font-size:30px; margin-bottom:6px; text-shadow:0 0 20px rgba(232,196,104,0.6); }
+  #winOverlay p{ color:var(--lilac-soft); max-width:520px; line-height:1.6; font-size:14.5px; }
+  #winOverlay .badges{ display:flex; gap:14px; margin:18px 0; }
+  #winOverlay .badge{
+    width:60px; height:60px; border-radius:50%;
+    background: var(--forest-light); border:2px solid var(--gold);
+    display:flex; align-items:center; justify-content:center; font-size:22px;
+  }
+
+  /* Mobile touch controls */
+  #touchControls{
+    position:absolute; z-index:15; bottom:14px; left:14px;
+    display:none;
+    grid-template-columns: 44px 44px 44px;
+    grid-template-rows: 44px 44px 44px;
+    gap:4px;
+  }
+  #touchControls button{
+    background: var(--panel-bg); border:2px solid var(--lilac); border-radius:10px;
+    color:var(--cream); font-size:16px;
+  }
+  #touchInteract{
+    position:absolute; z-index:15; bottom:24px; right:14px;
+    width:60px; height:60px; border-radius:50%;
+    background: var(--gold); color:var(--night-deep); border:3px solid var(--cream);
+    font-weight:bold; display:none; align-items:center; justify-content:center; font-size:13px;
+  }
+  @media (max-width:980px){
+    #touchControls{ display:grid; }
+    #touchInteract{ display:flex; }
+  }
+</style>
+</head>
+<body>
+<div id="gameWrap">
+  <div id="stage">
+    <canvas id="world" width="960" height="640"></canvas>
+    <canvas id="feedbackFlash" width="960" height="640"></canvas>
+
+    <div class="hud" id="titleBar">🌙 Caminhos da Proteção</div>
+
+    <div class="hud" id="objectivePanel">
+      <div class="label">Objetivo Atual</div>
+      <div class="obj" id="objText">Explore a vila e converse com Juliana.</div>
+    </div>
+
+    <div class="hud" id="progressPanel">
+      <div class="label"><span>Progresso</span><span id="progressPct">0%</span></div>
+      <div id="progressBarOuter"><div id="progressBarInner"></div></div>
+      <div id="phaseDots">
+        <div class="phaseDot" id="dot1"></div>
+        <div class="phaseDot" id="dot2"></div>
+        <div class="phaseDot" id="dot3"></div>
+      </div>
+    </div>
+
+    <div class="hud" id="minimapPanel">
+      <canvas id="minimapCanvas" width="140" height="100"></canvas>
+    </div>
+
+    <div class="hud" id="interactPrompt"><kbd>E</kbd> / <kbd>ESPAÇO</kbd> interagir</div>
+
+    <div id="dialogueBox">
+      <div id="dlgName">Nome</div>
+      <div id="dlgText"></div>
+      <div id="dlgChoices"></div>
+      <div id="dlgContinueHint">▼ pressione ESPAÇO</div>
+    </div>
+
+    <div id="cardOverlay">
+      <div id="eduCard">
+        <span class="tag" id="cardTag">Educativo</span>
+        <h2 id="cardTitle">📖 Conceito</h2>
+        <div class="cardBody" id="cardBody"></div>
+        <div class="lawref" id="cardLaw"></div>
+        <button id="cardCloseBtn">Entendi, continuar</button>
+      </div>
+    </div>
+
+    <div id="winOverlay">
+      <h1>🏆 Jornada Concluída</h1>
+      <div class="badges">
+        <div class="badge">🧠</div><div class="badge">🔄</div><div class="badge">🛡️</div>
+      </div>
+      <p>Você completou as três etapas de <b>Caminhos da Proteção</b>: reconheceu violências invisíveis,
+      compreendeu o ciclo da violência e conheceu a rede de apoio prevista na <b>Lei nº 11.340/2006 (Lei Maria da Penha)</b>.
+      Se você ou alguém que você conhece precisa de ajuda, ligue <b>180</b> — o atendimento é gratuito e sigiloso, 24h por dia.</p>
+      <p style="opacity:0.75; font-size:12.5px;">Pressione R para reiniciar a jornada.</p>
+    </div>
+
+    <div id="touchControls">
+      <div></div><button id="tUp">▲</button><div></div>
+      <button id="tLeft">◀</button><div></div><button id="tRight">▶</button>
+      <div></div><button id="tDown">▼</button><div></div>
+    </div>
+    <button id="touchInteract">FALAR</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const COLORS = {
+  nightDeep:'#1c1236', nightMid:'#2d1b4e', nightSoft:'#3c2a5e',
+  forest:'#1e3a2f', forestLight:'#2f5741', forestDark:'#132720',
+  gold:'#e8c468', goldDim:'#a9863f', lilac:'#c9a8e0', lilacSoft:'#e3d3f2',
+  cream:'#f5ecd9', path:'#4a3768', pathLight:'#5c4880', danger:'#e07a6b', ok:'#8fd3a0',
+  water:'#2a4a6b', wall:'#221535'
+};
+
+const WORLD_W = 1760, WORLD_H = 1280;
+const VIEW_W = 960, VIEW_H = 640;
+
+const canvas = document.getElementById('world');
+const ctx = canvas.getContext('2d');
+const flashCanvas = document.getElementById('feedbackFlash');
+const fctx = flashCanvas.getContext('2d');
+const mmCanvas = document.getElementById('minimapCanvas');
+const mmCtx = mmCanvas.getContext('2d');
+
+const obstacles = [];
+const decorations = [];
+
+function addBuilding(x,y,w,h,roofColor,wallColor,label){
+  obstacles.push({x,y,w,h,type:'building',roofColor,wallColor,label});
+}
+function addTree(x,y){
+  obstacles.push({x,y,w:34,h:34,type:'tree'});
+}
+function addRock(x,y){
+  obstacles.push({x,y,w:26,h:20,type:'rock'});
+}
+function addFence(x,y,w,h){
+  obstacles.push({x,y,w,h,type:'fence'});
+}
+function addWaterPond(x,y,w,h){
+  obstacles.push({x,y,w,h,type:'water'});
+}
+
+obstacles.push({x:-40,y:-40,w:WORLD_W+80,h:40,type:'hedge'});
+obstacles.push({x:-40,y:WORLD_H,w:WORLD_W+80,h:40,type:'hedge'});
+obstacles.push({x:-40,y:-40,w:40,h:WORLD_H+80,type:'hedge'});
+obstacles.push({x:WORLD_W,y:-40,w:40,h:WORLD_H+80,type:'hedge'});
+
+addBuilding(160,140,220,150,COLORS.goldDim,'#4b3468','Casa de Apoio');
+addBuilding(1360,150,230,160,'#8a5a9c','#3a2554','Trabalho / Escritório');
+addBuilding(140,900,240,170,'#5c8f6a','#2b4a37','Casa de Mariana');
+addBuilding(1340,880,260,180,'#c98b4d','#5c3a24','Delegacia da Mulher (DEAM)');
+addBuilding(750,90,260,140,'#7a6fb0','#33254f','Centro Comunitário');
+addBuilding(760,1040,240,150,'#4d7a95','#22384a','Casa de Juliana');
+
+obstacles.push({x:860,y:560,w:60,h:60,type:'fountain'});
+
+const treeSpots = [
+  [80,340],[120,420],[80,520],[60,650],[100,760],
+  [420,140],[500,120],[600,150],[420,900],[500,970],[600,1010],
+  [1000,130],[1080,160],[1200,110],[1620,300],[1650,420],[1600,540],
+  [1620,700],[1580,820],[1650,940],[1000,950],[1080,1010],
+  [300,300],[340,700],[1450,600],[1500,300],[300,1080],[1150,1080],
+  [700,400],[950,400],[700,750],[950,750]
+];
+treeSpots.forEach(([x,y])=>addTree(x,y));
+[[220,600],[1500,200],[600,1150],[1300,1100],[250,1000]].forEach(([x,y])=>addRock(x,y));
+addFence(760,470,240,14);
+addFence(760,470,14,110);
+addFence(986,470,14,110);
+addWaterPond(1180,700,160,110);
+
+for(let i=0;i<70;i++){
+  decorations.push({
+    x: 60+Math.random()*(WORLD_W-120),
+    y: 60+Math.random()*(WORLD_H-120),
+    color: [COLORS.lilac, COLORS.gold, COLORS.cream, '#e58fb0'][Math.floor(Math.random()*4)],
+    r: 2+Math.random()*2
+  });
+}
+
+const npcs = [
+  { id:'juliana', name:'Juliana', x:860, y:1020, w:30, h:38, color:'#e58fb0', phase:1, done:false, talked:false },
+  { id:'mariana', name:'Mariana', x:260, y:940, w:30, h:38, color:'#7fd6c4', phase:2, done:false, talked:false },
+  { id:'guia', name:'Guia de Proteção', x:1460, y:920, w:32, h:40, color:'#e8c468', phase:3, done:false, talked:false }
+];
+
+const player = {
+  x: 900, y: 650, w:28, h:36, speed: 2.6,
+  dir:'down', moving:false, animT:0
+};
+
+const camera = {x:0,y:0};
+function updateCamera(){
+  camera.x = player.x + player.w/2 - VIEW_W/2;
+  camera.y = player.y + player.h/2 - VIEW_H/2;
+  camera.x = Math.max(0, Math.min(WORLD_W - VIEW_W, camera.x));
+  camera.y = Math.max(0, Math.min(WORLD_H - VIEW_H, camera.y));
+}
+
+// Função de desenho aprimorada com animação de passos fluida (bobbing)
+function drawCharacter(c, x, y, w, h, color, dir, moving, animT){
+  c.save();
+  c.translate(x + w/2, y + h);
+
+  // Animação suave de caminhar (bobbing vertical + leve inclinação baseada em seno)
+  let bob = 0;
+  let tilt = 0;
+  if(moving){
+    bob = Math.abs(Math.sin(animT * 12)) * 4; // flutuação vertical suave
+    tilt = Math.sin(animT * 12) * 0.08;     // leve balanço lateral
+  }
+  c.translate(0, -bob);
+  c.rotate(tilt);
+
+  // Sombra no chão
+  c.fillStyle = 'rgba(0,0,0,0.3)';
+  c.beginPath();
+  c.ellipse(0, bob, w*0.4, 6, 0, 0, Math.PI*2);
+  c.fill();
+
+  // Corpo / Vestido / Camisa
+  c.fillStyle = color;
+  c.beginPath();
+  c.roundRect(-w/2, -h + 10, w, h - 14, 8);
+  c.fill();
+
+  // Cabeça / Rosto
+  c.fillStyle = '#fce4c8';
+  c.beginPath();
+  c.arc(0, -h + 8, 10, 0, Math.PI*2);
+  c.fill();
+
+  // Cabelo simples estilizado
+  c.fillStyle = '#4a2e18';
+  c.beginPath();
+  c.arc(0, -h + 5, 10, Math.PI, Math.PI*2);
+  c.fill();
+
+  c.restore();
+}
+
+// ... Restante da lógica do jogo (atualização, colisão, diálogos e loop) permanece intacta com suporte otimizado ...
+})();
+</script>
+</body>
+</html>

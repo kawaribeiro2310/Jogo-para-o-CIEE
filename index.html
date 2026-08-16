@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminhos da Proteção - RPG 2D Zelda Style</title>
+    <style>
+        :root {
+            --bg-color: #120a1f;
+            --panel-bg: #211235;
+            --accent: #b165d7;
+            --accent-hover: #c985ec;
+            --text-main: #f3e9fc;
+            --text-muted: #c4b5d6;
+            --border: #5b367d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .game-wrapper {
+            width: 100%;
+            max-width: 640px;
+            background-color: var(--panel-bg);
+            border: 3px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hud {
+            background-color: #1a0e28;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            background-color: #2e4d34;
+        }
+
+        canvas {
+            display: block;
+            background: #355e3b;
+        }
+
+        /* Caixa de Diálogo estilo RPG Clássico */
+        .dialog-box {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(20, 10, 30, 0.95);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dialog-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .dialog-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .dialog-btn {
+            background-color: #372350;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .dialog-btn:hover {
+            background-color: var(--accent);
+            border-color: var(--accent-hover);
+        }
+
+        .controls-hint {
+            background-color: #1a0e28;
+            padding: 8px 15px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="hud">
+            <div>🛡️ <strong>Caminhos da Proteção</strong></div>
+            <div id="objective-hud">Missão: Explore a Vila e fale com as pessoas</div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="gameCanvas" width="640" height="480"></canvas>
+
+            <!-- Caixa de Diálogo interativa do RPG -->
+            <div id="dialogBox" class="dialog-box">
+                <div id="dialogText" class="dialog-text">Texto do personagem...</div>
+                <div id="dialogOptions" class="dialog-options"></div>
+            </div>
+        </div>
+
+        <div class="controls-hint">
+            Use as <strong>Setas do Teclado</strong> (ou W, A, S, D) para andar e aproxime-se dos NPCs para interagir.
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const dialogBox = document.getElementById('dialogBox');
+        const dialogText = document.getElementById('dialogText');
+        const dialogOptions = document.getElementById('dialogOptions');
+        const objectiveHud = document.getElementById('objective-hud');
+
+        // Estado do Jogador
+        let player = {
+            x: 100,
+            y: 200,
+            width: 24,
+            height: 32,
+            speed: 3,
+            color: '#4ade80',
+            direction: 'down'
+        };
+
+        // Teclas pressionadas
+        let keys = {};
+
+        window.addEventListener('keydown', (e) => { keys[e.key] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
+
+        // Obstáculos do Cenário (Árvores e Paredes)
+        let obstacles = [
+            { x: 0, y: 0, width: 640, height: 40 },  // Topo
+            { x: 0, y: 440, width: 640, height: 40 }, // Base
+            { x: 0, y: 0, width: 40, height: 480 },  // Esquerda
+            { x: 600, y: 0, width: 40, height: 480 }, // Direita
+            { x: 200, y: 150, width: 100, height: 80 }, // Casa / Obstáculo central
+            { x: 400, y: 300, width: 120, height: 60 }  // Canteiro / Cerca
+        ];
+
+        // NPCs interativos na Vila
+        let npcs = [
+            {
+                id: 'juliana',
+                x: 150,
+                y: 320,
+                width: 24,
+                height: 32,
+                color: '#f472b6',
+                name: 'Juliana',
+                dialogIndex: 0,
+                completed: false,
+                dialogs: [
+                    {
+                        text: "Juliana: 'Oi! Na reunião de hoje, meu colega me interrompeu e explicou minha ideia como se fosse dele, recebendo todo o crédito. O que é isso?'",
+                        options: [
+                            { text: "A) Dinâmica normal de escritório.", correct: false, feedback: "Incorreto! Isso se chama Manterrupting/Mansplaining." },
+                            { text: "B) Manterrupting e Mansplaining (Violência Moral/Profissional).", correct: true, feedback: "Correto! Silenciar e desqualificar a mulher profissionalmente é violência moral." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'mariana',
+                x: 480,
+                y: 120,
+                width: 24,
+                height: 32,
+                color: '#60a5fa',
+                name: 'Mariana',
+                dialogIndex: 0,
+                completed: false,
+                dialogs: [
+                    {
+                        text: "Mariana: 'Meu parceiro diz que eu estou louca e invento coisas toda vez que cobro algo combinado. O que está acontecendo?'",
+                        options: [
+                            { text: "A) É apenas uma falha de memória comum.", correct: false, feedback: "Incorreto. Manipular a realidade para fazer duvidar da sanidade tem nome." },
+                            { text: "B) Gaslighting (Violência Psicológica).", correct: true, feedback: "Correto! O Gaslighting distorce fatos para gerar dependência emocional." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'guia',
+                x: 320,
+                y: 80,
+                width: 28,
+                height: 36,
+                color: '#fbbf24',
+                name: 'Guia de Proteção',
+                dialogIndex: 0,
+                completed: false,
+                dialogs: [
+                    {
+                        text: "Guia: 'Se você ou alguém sofre violência e precisa de acolhimento ou medidas protetivas imediatas, para onde deve recorrer?'",
+                        options: [
+                            { text: "A) Ligar para o Disque 180 ou procurar a DEAM / CRAS.", correct: true, feedback: "Correto! O Disque 180 e a Delegacia da Mulher garantem proteção vital." },
+                            { text: "B) Esperar o tempo resolver sem falar com ninguém.", correct: false, feedback: "Incorreto. O ciclo de violência tende a se agravar." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let activeNpc = null;
+        let gameFinished = false;
+
+        function checkCollision(nx, ny) {
+            let rect = { x: nx, y: ny, width: player.width, height: player.height };
+            for (let obs of obstacles) {
+                if (rect.x < obs.x + obs.width && rect.x + rect.width > obs.x &&
+                    rect.y < obs.y + obs.height && rect.y + rect.height > obs.y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function update() {
+            if (dialogBox.style.display === 'flex') return; // Congela se estiver em diálogo
+
+            let dx = 0;
+            let dy = 0;
+
+            if (keys['ArrowUp'] || keys['w'] || keys['W']) { dy = -player.speed; player.direction = 'up'; }
+            if (keys['ArrowDown'] || keys['s'] || keys['S']) { dy = player.speed; player.direction = 'down'; }
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) { dx = -player.speed; player.direction = 'left'; }
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) { dx = player.speed; player.direction = 'right'; }
+
+            if (!checkCollision(player.x + dx, player.y)) player.x += dx;
+            if (!checkCollision(player.x, player.y + dy)) player.y += dy;
+
+            // Verificar proximidade com NPCs para interagir
+            activeNpc = null;
+            for (let npc of npcs) {
+                let dist = Math.hypot(player.x - npc.x, player.y - npc.y);
+                if (dist < 40 && !npc.completed) {
+                    activeNpc = npc;
+                    objectiveHud.innerText = `Pressione ESPAÇO para falar com ${npc.name}`;
+                    break;
+                }
+            }
+
+            if (!activeNpc && !gameFinished) {
+                objectiveHud.innerText = "Missão: Explore a vila e converse com os personagens (Juliana, Mariana, Guia)";
+            }
+
+            if (keys[' '] && activeNpc) {
+                openDialog(activeNpc);
+                keys[' '] = false; // Evitar múltiplos triggers
+            }
+        }
+
+        function openDialog(npc) {
+            const currentDialog = npc.dialogs[npc.dialogIndex];
+            dialogText.innerText = currentDialog.text;
+            
+            let optionsHtml = '';
+            currentDialog.options.forEach((opt, idx) => {
+                optionsHtml += `<button class="dialog-btn" onclick="handleChoice(${npcs.indexOf(npc)}, ${idx})">${opt.text}</button>`;
+            });
+
+            dialogOptions.innerHTML = optionsHtml;
+            dialogBox.style.display = 'flex';
+        }
+
+        window.handleChoice = function(npcIndex, optionIndex) {
+            const npc = npcs[npcIndex];
+            const currentDialog = npc.dialogs[npc.dialogIndex];
+            const choice = currentDialog.options[optionIndex];
+
+            if (choice.correct) {
+                dialogText.innerText = `✅ Perfeito!\n\n${choice.feedback}`;
+                dialogOptions.innerHTML = `<button class="dialog-btn" style="background-color: var(--accent);" onclick="closeDialog(${npcIndex})">Continuar Aventura ➔</button>`;
+            } else {
+                dialogText.innerText = `⚠️ Ops!\n\n${choice.feedback}`;
+                dialogOptions.innerHTML = `<button class="dialog-btn" onclick="openDialog(npcs[${npcIndex}])">Tentar Novamente ↺</button>`;
+            }
+        }
+
+        window.closeDialog = function(npcIndex) {
+            npcs[npcIndex].completed = true;
+            dialogBox.style.display = 'none';
+
+            // Checar se todos completaram
+            let allDone = npcs.every(n => n.completed);
+            if (allDone) {
+                gameFinished = true;
+                objectiveHud.innerText = "🎉 Parabéns! Você concluiu todos os desafios da rede de proteção!";
+                setTimeout(() => {
+                    alert("Parabéns! Você completou a jornada em 'Caminhos da Proteção', identificando violências e compreendendo os canais de ajuda da Lei Maria da Penha.");
+                }, 200);
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenhar grama de fundo padrão estilo Zelda / RPG retrô
+            ctx.fillStyle = '#355e3b';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Desenhar Obstáculos / Casas / Cenário
+            ctx.fillStyle = '#223826';
+            for (let obs of obstacles) {
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                ctx.strokeStyle = '#18291b';
+                ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
+            }
+
+            // Desenhar NPCs
+            for (let npc of npcs) {
+                ctx.fillStyle = npc.completed ? '#6b7280' : npc.color;
+                ctx.fillRect(npc.x, npc.y, npc.width, npc.height);
+                
+                // Nome do NPC flutuante
+                ctx.fillStyle = '#fff';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(npc.name, npc.x + npc.width/2, npc.y - 6);
+                
+                if (!npc.completed) {
+                    ctx.fillText('(!)', npc.x + npc.width/2, npc.y - 18);
+                }
+            }
+
+            // Desenhar o Jogador (Herói 2D)
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            // Detalhe do boneco (cabeça/olhos direcionais)
+            ctx.fillStyle = '#111';
+            if (player.direction === 'down') ctx.fillRect(player.x + 4, player.y + 4, 16, 6);
+            if (player.direction === 'up') ctx.fillRect(player.x + 4, player.y + 22, 16, 6);
+            if (player.direction === 'left') ctx.fillRect(player.x + 4, player.y + 8, 6, 16);
+            if (player.direction === 'right') ctx.fillRect(player.x + 14, player.y + 8, 6, 16);
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+    </script>
+</body>
+</html>

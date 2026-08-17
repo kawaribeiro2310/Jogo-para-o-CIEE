@@ -15,6 +15,12 @@
 
 ---
 
+<div align="center">
+  <img src="print.png" alt="Tela Inicial do Jogo Caminhos da Proteção" width="750px">
+</div>
+
+---
+
 ## 🎨 Sobre o Projeto
 
 O **Caminhos da Proteção** é um RPG narrativo e visual novel interativo criado com o objetivo de educar jovens e a comunidade em geral sobre os diferentes tipos de violência previstos na **Lei Maria da Penha (Lei nº 11.340/2006)**. 
@@ -51,8 +57,15 @@ Este projeto foi desenvolvido de forma leve, moderna e acessível, rodando diret
 
 * **HTML5** (Estrutura e Canvas)
 * **CSS3** (Estilização responsiva, layout customizado e tema escuro imersivo)
-* **JavaScript (Vanilla)** (Lógica do jogo, movimentação do player, sistema de diálogos, HUD, minomapa e gerenciamento de estados)
+* **JavaScript (Vanilla)** (Lógica do jogo, movimentação do player, sistema de diálogos, HUD, minimapa e gerenciamento de estados)
 
 ---
 
 ## 📂 Estrutura do Projeto
+
+```text
+caminhos-da-protecao/
+│
+├── index.html         # Arquivo principal contendo toda a engine do jogo, estilos e lógica
+├── print.png          # Captura de tela do menu principal do jogo
+└── README.md          # Documentação do projeto

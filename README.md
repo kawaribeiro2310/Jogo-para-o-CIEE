@@ -16,7 +16,7 @@
 ---
 
 <div align="center">
-  <img src="print.png" alt="Tela Inicial do Jogo Caminhos da Proteção" width="750px">
+  <img src="https://cdn.discordapp.com/attachments/1500944813334331526/1539060770959138877/AAQ_wbHbLfUz5PcrmUkP-QskQy7SPXlRaDyWhxrZ11JZYvWXzh9vs-a9wwvNvLRHrf69nW4kjXzukFtvKVYIam-m1dSqoh2oDcfmw2ncqnjAGpDfnp33X4FiX6f4ZDYuR3tA2qb0QNkA0KcUH_v6aBLuk0I6wFVkNgDdEum-6Z9LW9DKGLE0Qgs1024-rj.png?ex=6a84f18a&is=6a83a00a&hm=0fd378e1c9060c0e20a64fb7f5d176cd719b1bc25f7ad3c999107728d41b915e&" alt="Caminhos da Proteção - Desenvolvido por Kawã para o CIEE" width="800px">
 </div>
 
 ---
@@ -67,5 +67,4 @@ Este projeto foi desenvolvido de forma leve, moderna e acessível, rodando diret
 caminhos-da-protecao/
 │
 ├── index.html         # Arquivo principal contendo toda a engine do jogo, estilos e lógica
-├── print.png          # Captura de tela do menu principal do jogo
 └── README.md          # Documentação do projeto

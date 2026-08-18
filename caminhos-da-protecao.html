@@ -18,7 +18,7 @@
     --cream:#f5ecd9;
     --danger:#e07a6b;
     --ok:#8fd3a0;
-    --panel-bg: rgba(28, 18, 54, 0.92);
+    --panel-bg: rgba(28, 18, 54, 0.94);
     --panel-border: #e8c468;
   }
   *{box-sizing:border-box;}
@@ -61,17 +61,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(90deg, rgba(20, 10, 30, 0.85) 0%, rgba(15, 8, 25, 0.4) 50%, rgba(10, 5, 20, 0.9) 100%),
+    background: linear-gradient(90deg, rgba(20, 10, 30, 0.9) 0%, rgba(15, 8, 25, 0.5) 50%, rgba(10, 5, 20, 0.95) 100%),
                 radial-gradient(circle at 30% 50%, #3a2254 0%, #110924 70%);
     padding: 30px 50px;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
   }
   #mainMenu.hidden {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
   }
 
-  /* Lado Esquerdo / Avatar da Personagem Principal */
   .menu-left-panel {
     display: flex;
     flex-direction: column;
@@ -82,15 +82,15 @@
   }
   .character-card {
     position: relative;
-    background: rgba(45, 27, 78, 0.75);
+    background: rgba(45, 27, 78, 0.85);
     border: 3px solid var(--gold);
     border-radius: 20px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 0 25px rgba(232, 196, 104, 0.3), inset 0 0 15px rgba(201, 168, 224, 0.2);
-    backdrop-filter: blur(6px);
+    box-shadow: 0 0 30px rgba(232, 196, 104, 0.25), inset 0 0 15px rgba(201, 168, 224, 0.15);
+    backdrop-filter: blur(8px);
     animation: floatCard 4s ease-in-out infinite;
   }
   @keyframes floatCard {
@@ -138,7 +138,6 @@
     font-weight: bold;
   }
 
-  /* Painel Direito - Menu de Opções Verticais */
   .menu-right-panel {
     width: 300px;
     display: flex;
@@ -181,12 +180,12 @@
     box-shadow: 0 4px 20px rgba(232,196,104,0.4);
   }
 
-  /* ---------- CONTROLE DISCRETO DE ÁUDIO ---------- */
+  /* ---------- AUDIO TOGGLE ---------- */
   #audioToggle {
     position: absolute;
     top: 12px;
     right: 12px;
-    z-index: 40;
+    z-index: 60;
     background: var(--panel-bg);
     border: 2px solid var(--gold);
     color: var(--gold);
@@ -297,9 +296,9 @@
     background: var(--gold); color:var(--night-deep); padding:1px 7px; border-radius:5px; font-weight:bold;
   }
 
-  /* ---------- Dialogue ---------- */
+  /* ---------- DIALOGUE ---------- */
   #dialogueBox{
-    position:absolute; z-index:10;
+    position:absolute; z-index:15;
     left:50%; bottom:16px; transform:translateX(-50%);
     width:88%; max-width:820px; min-height:150px;
     background: var(--panel-bg);
@@ -348,31 +347,36 @@
   }
   @keyframes blink{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
 
-  /* ---------- Educational Card Modal & Titles Modal ---------- */
+  /* ---------- MODAIS (CARD EDUCATIVO & TÍTULOS RECTIFICADO) ---------- */
   #cardOverlay, #titlesOverlay{
-    position:absolute; inset:0; z-index:20;
-    background: rgba(10,6,20,0.72);
+    position:absolute; inset:0; z-index:100;
+    background: rgba(10,6,20,0.85);
+    backdrop-filter: blur(6px);
     display:none; align-items:center; justify-content:center;
   }
   #cardOverlay.visible, #titlesOverlay.visible{ display:flex; animation: fadeIn 0.25s ease; }
   @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+
   #eduCard, #titlesCard{
-    width:86%; max-width:560px; max-height:82%;
-    background: linear-gradient(160deg, var(--night-mid), var(--night-deep));
+    width:90%; max-width:580px; max-height:85%;
+    background: linear-gradient(160deg, #2a1945, #150b28);
     border: 3px solid var(--gold);
     border-radius: 20px;
-    padding: 22px 26px;
-    box-shadow: 0 0 0 6px rgba(232,196,104,0.15), 0 20px 60px rgba(0,0,0,0.7);
+    padding: 24px 28px;
+    box-shadow: 0 0 35px rgba(232,196,104,0.25), 0 20px 60px rgba(0,0,0,0.8);
     overflow-y:auto;
     animation: popIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
   @keyframes popIn{ from{ transform:scale(0.9); opacity:0;} to{ transform:scale(1); opacity:1;} }
+
   #eduCard h2, #titlesCard h2{
-    margin:0 0 4px 0; color:var(--gold); font-size:19px; display:flex; gap:8px; align-items:center;
+    margin:0 0 6px 0; color:var(--gold); font-size:22px; display:flex; gap:10px; align-items:center;
   }
   #eduCard .tag{
     display:inline-block; font-size:10px; letter-spacing:1px; text-transform:uppercase;
-    color: var(--night-deep); background: var(--lilac); padding:2px 10px; border-radius:8px; margin-bottom:10px;
+    color: var(--night-deep); background: var(--lilac); padding:2px 10px; border-radius:8px; margin-bottom:10px; align-self: flex-start;
   }
   #eduCard .cardBody{ font-size:14.5px; line-height:1.6; color: var(--cream); }
   #eduCard .cardBody b{ color: var(--gold); }
@@ -383,49 +387,69 @@
     border-radius: 6px;
     font-size:13px; color:var(--ok);
   }
-  #eduCard button, #titlesCard button{
-    margin-top:18px;
+
+  .modal-btn {
+    margin-top:20px;
     width:100%;
-    background: var(--gold);
+    background: linear-gradient(135deg, #e8c468, #c9a038);
     color: var(--night-deep);
     border:none; border-radius:12px;
-    padding: 10px;
-    font-weight:bold; font-size:14px;
+    padding: 12px;
+    font-weight:bold; font-size:15px;
     cursor:pointer;
     letter-spacing:0.5px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(232, 196, 104, 0.3);
   }
-  #eduCard button:hover, #titlesCard button:hover{ filter:brightness(1.08); }
+  .modal-btn:hover{ filter:brightness(1.15); transform: translateY(-2px); }
 
-  /* Estilos das Tags/Títulos */
+  /* ESTILIZAÇÃO DO PAINEL DE TÍTULOS DE KAWAZIN */
+  #titlesList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 14px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
   .title-tag-item {
-    background: rgba(201, 168, 224, 0.12);
-    border: 2px solid var(--gold);
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-top: 10px;
+    background: rgba(201, 168, 224, 0.08);
+    border: 1.5px solid var(--lilac);
+    border-radius: 14px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+  }
+  .title-tag-item:hover {
+    transform: translateX(4px);
+    background: rgba(201, 168, 224, 0.15);
   }
   .title-tag-badge {
-    background: var(--gold);
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
     color: var(--night-deep);
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
+    font-weight: 900;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
 
-  /* ---------- Feedback flash ---------- */
+  /* Feedback flash */
   #feedbackFlash{
     position:absolute; inset:0; z-index:9; pointer-events:none;
     opacity:0;
   }
 
-  /* ---------- Win screen ---------- */
+  /* Win screen */
   #winOverlay{
-    position:absolute; inset:0; z-index:30;
+    position:absolute; inset:0; z-index:120;
     background: radial-gradient(ellipse at center, rgba(45,27,78,0.95), rgba(10,6,20,0.98));
     display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center;
     padding: 30px;
@@ -467,7 +491,7 @@
 <body>
 <div id="gameWrap">
   <div id="stage">
-    <!-- MENU INICIAL ESTILO ARTE CONCEITUAL COM SUA PERSONAGEM -->
+    <!-- MENU INICIAL -->
     <div id="mainMenu">
       <div class="menu-left-panel">
         <div class="character-card">
@@ -492,7 +516,7 @@
       </div>
     </div>
 
-    <!-- MUTE/AUDIO BUTTON -->
+    <!-- CONTROLE DE ÁUDIO -->
     <button id="audioToggle" title="Alternar Som">🔊</button>
 
     <canvas id="world" width="960" height="640"></canvas>
@@ -528,28 +552,28 @@
       <div id="dlgContinueHint">▼ pressione ESPAÇO</div>
     </div>
 
+    <!-- MODAL EDUCATIVO -->
     <div id="cardOverlay">
       <div id="eduCard">
         <span class="tag" id="cardTag">Educativo</span>
         <h2 id="cardTitle">📖 Conceito</h2>
         <div class="cardBody" id="cardBody"></div>
         <div class="lawref" id="cardLaw"></div>
-        <button id="cardCloseBtn">Entendi, continuar</button>
+        <button class="modal-btn" id="cardCloseBtn">Entendi, continuar</button>
       </div>
     </div>
 
-    <!-- MODAL DE TÍTULOS E TAGS -->
+    <!-- MODAL DE TÍTULOS E TAGS REESTILIZADO -->
     <div id="titlesOverlay">
       <div id="titlesCard">
-        <h2>🎖️ Títulos de Kawazin</h2>
-        <p style="font-size:13px; color:var(--lilac-soft);">Aqui estão as tags e títulos conquistados na sua jornada:</p>
-        <div id="titlesList">
-          <div style="opacity:0.6; font-style:italic; margin:15px 0;" id="noTitlesText">Nenhum título desbloqueado ainda. Use códigos no menu para resgatar!</div>
-        </div>
-        <button id="titlesCloseBtn">Fechar</button>
+        <h2>🎖️ Galeria de Títulos</h2>
+        <p style="font-size:13px; color:var(--lilac-soft); margin: 0 0 10px 0;">Sua coleção de conquistas e badges desbloqueadas:</p>
+        <div id="titlesList"></div>
+        <button class="modal-btn" id="titlesCloseBtn">Fechar Painel</button>
       </div>
     </div>
 
+    <!-- TELA DE VITÓRIA -->
     <div id="winOverlay">
       <h1>🏆 Jornada Concluída</h1>
       <div class="badges">
@@ -575,15 +599,18 @@
 "use strict";
 
 /* ============================================================
-   SISTEMA DE ÁUDIO
+   ESTADO DO JOGO E VARIÁVEIS DE CONTROLE
+============================================================ */
+let gameState = 'menu'; // menu | explore | dialogue | card | titles | win
+
+/* ============================================================
+   SISTEMA DE ÁUDIO RESILIENTE
 ============================================================ */
 let audioMuted = false;
 const bgMenu = new Audio("menu.mp3");
 bgMenu.loop = true;
 const bgJogo = new Audio("jogo.mp3");
 bgJogo.loop = true;
-
-// Efeito sonoro de item/missão
 const sfxGetItem = new Audio("get-item.mp3");
 
 function playAudio(audio) {
@@ -618,7 +645,7 @@ audioToggleBtn.addEventListener('click', () => {
 });
 
 /* ============================================================
-   SISTEMA DE TÍTULOS / TAGS DO KAWAZIN
+   SISTEMA DE TÍTULOS / TAGS
 ============================================================ */
 const playerTitles = [];
 
@@ -632,7 +659,10 @@ function unlockTitle(titleTag, description) {
 function updateTitlesUI() {
   const listContainer = document.getElementById('titlesList');
   if (playerTitles.length === 0) {
-    listContainer.innerHTML = `<div style="opacity:0.6; font-style:italic; margin:15px 0;">Nenhum título desbloqueado ainda. Use códigos no menu para resgatar!</div>`;
+    listContainer.innerHTML = `
+      <div style="opacity:0.6; font-style:italic; text-align:center; padding: 20px 0;">
+        Nenhum título desbloqueado ainda.<br>Resgate códigos no menu ou avance na história!
+      </div>`;
     return;
   }
   listContainer.innerHTML = '';
@@ -641,7 +671,7 @@ function updateTitlesUI() {
     item.className = 'title-tag-item';
     item.innerHTML = `
       <span class="title-tag-badge">${t.tag}</span>
-      <span style="font-size:13px; color:var(--cream);">${t.desc}</span>
+      <span style="font-size:13px; color:var(--cream); line-height: 1.3;">${t.desc}</span>
     `;
     listContainer.appendChild(item);
   });
@@ -692,18 +722,10 @@ const decorations = [];
 function addBuilding(x,y,w,h,roofColor,wallColor,label){
   obstacles.push({x,y,w,h,type:'building',roofColor,wallColor,label});
 }
-function addTree(x,y){
-  obstacles.push({x,y,w:34,h:34,type:'tree'});
-}
-function addRock(x,y){
-  obstacles.push({x,y,w:26,h:20,type:'rock'});
-}
-function addFence(x,y,w,h){
-  obstacles.push({x,y,w,h,type:'fence'});
-}
-function addWaterPond(x,y,w,h){
-  obstacles.push({x,y,w,h,type:'water'});
-}
+function addTree(x,y){ obstacles.push({x,y,w:34,h:34,type:'tree'}); }
+function addRock(x,y){ obstacles.push({x,y,w:26,h:20,type:'rock'}); }
+function addFence(x,y,w,h){ obstacles.push({x,y,w,h,type:'fence'}); }
+function addWaterPond(x,y,w,h){ obstacles.push({x,y,w,h,type:'water'}); }
 
 // Boundaries
 obstacles.push({x:-40,y:-40,w:WORLD_W+80,h:40,type:'hedge'});
@@ -722,7 +744,7 @@ addBuilding(760,1040,240,150,'#4d7a95','#22384a','Casa de Juliana');
 // Fountain
 obstacles.push({x:860,y:560,w:60,h:60,type:'fountain'});
 
-// Trees
+// Trees & Rocks
 const treeSpots = [
   [80,340],[120,420],[80,520],[60,650],[100,760],
   [420,140],[500,120],[600,150],[420,900],[500,970],[600,1010],
@@ -732,16 +754,12 @@ const treeSpots = [
   [700,400],[950,400],[700,750],[950,750]
 ];
 treeSpots.forEach(([x,y])=>addTree(x,y));
-
-// Rocks
 [[220,600],[1500,200],[600,1150],[1300,1100],[250,1000]].forEach(([x,y])=>addRock(x,y));
 
-// Fences
+// Fences & Pond
 addFence(760,470,240,14);
 addFence(760,470,14,110);
 addFence(986,470,14,110);
-
-// Pond
 addWaterPond(1180,700,160,110);
 
 // Flowers
@@ -755,7 +773,7 @@ for(let i=0;i<70;i++){
 }
 
 /* ============================================================
-   MINI QUESTS / COLECIONÁVEIS ESPALHADOS PELO MAPA
+   MINI QUESTS / COLECIONÁVEIS
 ============================================================ */
 const miniQuests = [
   {
@@ -773,25 +791,16 @@ const miniQuests = [
 ];
 
 /* ============================================================
-   NPCs REFINADOS
+   NPCs
 ============================================================ */
 const npcs = [
-  {
-    id:'juliana', name:'Juliana', x:860, y:1020, w:34, h:42, color:'#e58fb0',
-    clothing:'#8e44ad', phase:1, done:false, talked:false
-  },
-  {
-    id:'mariana', name:'Mariana', x:260, y:940, w:34, h:42, color:'#7fd6c4',
-    clothing:'#16a085', phase:2, done:false, talked:false
-  },
-  {
-    id:'guia', name:'Guia de Proteção', x:1460, y:920, w:36, h:44, color:'#e8c468',
-    clothing:'#d35400', phase:3, done:false, talked:false
-  }
+  { id:'juliana', name:'Juliana', x:860, y:1020, w:34, h:42, color:'#e58fb0', clothing:'#8e44ad', phase:1, done:false },
+  { id:'mariana', name:'Mariana', x:260, y:940, w:34, h:42, color:'#7fd6c4', clothing:'#16a085', phase:2, done:false },
+  { id:'guia', name:'Guia de Proteção', x:1460, y:920, w:36, h:44, color:'#e8c468', clothing:'#d35400', phase:3, done:false }
 ];
 
 /* ============================================================
-   PLAYER COM MECÂNICA DE SPRINT
+   PLAYER
 ============================================================ */
 const player = {
   x: 900, y: 650, w:32, h:44,
@@ -802,22 +811,16 @@ const player = {
 };
 
 /* ============================================================
-   CAMERA
+   CAMERA & COLLISION
 ============================================================ */
 const camera = {x:0,y:0};
 function updateCamera(){
-  camera.x = player.x + player.w/2 - VIEW_W/2;
-  camera.y = player.y + player.h/2 - VIEW_H/2;
-  camera.x = Math.max(0, Math.min(WORLD_W - VIEW_W, camera.x));
-  camera.y = Math.max(0, Math.min(WORLD_H - VIEW_H, camera.y));
+  camera.x = Math.max(0, Math.min(WORLD_W - VIEW_W, player.x + player.w/2 - VIEW_W/2));
+  camera.y = Math.max(0, Math.min(WORLD_H - VIEW_H, player.y + player.h/2 - VIEW_H/2));
 }
 
-/* ============================================================
-   COLLISION
-============================================================ */
-function rectsOverlap(a,b){
-  return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
-}
+function rectsOverlap(a,b){ return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y; }
+
 function collidesWorld(px,py,pw,ph){
   const box = {x:px,y:py,w:pw,h:ph};
   for(const o of obstacles){
@@ -833,18 +836,8 @@ function collidesWorld(px,py,pw,ph){
 }
 
 function tryMove(dx,dy){
-  if(dx!==0){
-    const nx = player.x + dx;
-    if(!collidesWorld(nx, player.y, player.w, player.h)){
-      player.x = nx;
-    }
-  }
-  if(dy!==0){
-    const ny = player.y + dy;
-    if(!collidesWorld(player.x, ny, player.w, player.h)){
-      player.y = ny;
-    }
-  }
+  if(dx!==0 && !collidesWorld(player.x + dx, player.y, player.w, player.h)) player.x += dx;
+  if(dy!==0 && !collidesWorld(player.x, player.y + dy, player.w, player.h)) player.y += dy;
   player.x = Math.max(10, Math.min(WORLD_W-10-player.w, player.x));
   player.y = Math.max(10, Math.min(WORLD_H-10-player.h, player.y));
 }
@@ -855,26 +848,16 @@ function tryMove(dx,dy){
 let particles = [];
 function spawnParticles(x,y,color,count){
   for(let i=0;i<count;i++){
-    particles.push({
-      x, y,
-      vx:(Math.random()-0.5)*3,
-      vy:-Math.random()*3-1,
-      life: 40+Math.random()*20,
-      maxLife: 60,
-      color
-    });
+    particles.push({ x, y, vx:(Math.random()-0.5)*3, vy:-Math.random()*3-1, life: 40+Math.random()*20, maxLife: 60, color });
   }
 }
 function updateParticles(){
-  particles.forEach(p=>{
-    p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life--;
-  });
+  particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life--; });
   particles = particles.filter(p=>p.life>0);
 }
 function drawParticles(){
   particles.forEach(p=>{
-    const a = Math.max(0,p.life/p.maxLife);
-    ctx.globalAlpha = a;
+    ctx.globalAlpha = Math.max(0,p.life/p.maxLife);
     ctx.fillStyle = p.color;
     ctx.beginPath();
     ctx.arc(p.x-camera.x, p.y-camera.y, 3, 0, Math.PI*2);
@@ -884,38 +867,37 @@ function drawParticles(){
 }
 
 /* ============================================================
-   EDUCATIONAL CARD MODAL
+   MODAIS E DIÁLOGOS
 ============================================================ */
-function showEduCard({tag, title, bodyHTML, lawHTML, onClose}){
-  document.getElementById('cardTag').textContent = tag;
-  document.getElementById('cardTitle').textContent = title;
-  document.getElementById('cardBody').innerHTML = bodyHTML;
-  document.getElementById('cardLaw').innerHTML = lawHTML;
-  const overlay = document.getElementById('cardOverlay');
-  overlay.classList.add('visible');
-  const btn = document.getElementById('cardCloseBtn');
-  btn.onclick = ()=>{
-    overlay.classList.remove('visible');
-    if(onClose) onClose();
-  };
-}
-
-/* ============================================================
-   DIALOGUE SYSTEM
-============================================================ */
-const dlgBox = document.getElementById('dialogueBox');
-const dlgName = document.getElementById('dlgName');
-const dlgText = document.getElementById('dlgText');
-const dlgChoices = document.getElementById('dlgChoices');
-const dlgContinueHint = document.getElementById('dlgContinueHint');
-
-let gameState = 'menu'; // menu | explore | dialogue | card | win
 let currentNPC = null;
 let dialogueQueue = [];
 let dialogueIndex = 0;
 let typewriterTimer = null;
 let typewriterDone = false;
 let awaitingChoice = false;
+
+function showEduCard({tag, title, bodyHTML, lawHTML, onClose}){
+  gameState = 'card';
+  document.getElementById('cardTag').textContent = tag;
+  document.getElementById('cardTitle').textContent = title;
+  document.getElementById('cardBody').innerHTML = bodyHTML;
+  document.getElementById('cardLaw').innerHTML = lawHTML;
+  const overlay = document.getElementById('cardOverlay');
+  overlay.classList.add('visible');
+  
+  const btn = document.getElementById('cardCloseBtn');
+  btn.onclick = ()=>{
+    overlay.classList.remove('visible');
+    gameState = 'explore';
+    if(onClose) onClose();
+  };
+}
+
+const dlgBox = document.getElementById('dialogueBox');
+const dlgName = document.getElementById('dlgName');
+const dlgText = document.getElementById('dlgText');
+const dlgChoices = document.getElementById('dlgChoices');
+const dlgContinueHint = document.getElementById('dlgContinueHint');
 
 function openDialogue(npc, nodes){
   gameState = 'dialogue';
@@ -951,15 +933,9 @@ function playNode(){
         b.onclick = ()=>{
           dlgChoices.innerHTML = '';
           if(choice.action) choice.action();
-          if(choice.next !== undefined){
-            dialogueIndex = choice.next;
-            playNode();
-          } else if(choice.endDialogue){
-            closeDialogue();
-          } else {
-            dialogueIndex++;
-            playNode();
-          }
+          if(choice.next !== undefined){ dialogueIndex = choice.next; playNode(); }
+          else if(choice.endDialogue){ closeDialogue(); }
+          else { dialogueIndex++; playNode(); }
         };
         dlgChoices.appendChild(b);
       });
@@ -1017,7 +993,7 @@ function advanceDialogue(){
 }
 
 /* ============================================================
-   PROGRESSO E FASES DO JOGO
+   PROGRESSO E FASES
 ============================================================ */
 function flashFeedback(good){
   fctx.clearRect(0,0,VIEW_W,VIEW_H);
@@ -1037,7 +1013,7 @@ function flashFeedback(good){
 
 function markPhaseDone(phaseNum, npc){
   npc.done = true;
-  playSfxItem(); // Áudio get-item.mp3 ao concluir a missão do NPC
+  playSfxItem();
   document.getElementById('dot'+phaseNum).classList.add('done');
   const completed = npcs.filter(n=>n.done).length;
   const pct = Math.round((completed/3)*100);
@@ -1098,16 +1074,13 @@ function showFase1Card(kind, npc){
     mansplaining:{
       tag:'Fase 1 · Violências Invisíveis',
       title:'🗣️ Mansplaining & Manterrupting',
-      bodyHTML: `<b>Mansplaining</b> é quando alguém explica algo a uma mulher em tom condescendente, presumindo que ela não entende o próprio assunto.<br><br>
-      <b>Manterrupting</b> é a interrupção repetida e desnecessária da fala de mulheres.<br><br>
-      Quando <b>reiterados e sistemáticos</b>, contribuem para a desigualdade e violência psicológica.`,
+      bodyHTML: `<b>Mansplaining</b> é quando alguém explica algo a uma mulher em tom condescendente, presumindo que ela não entende o próprio assunto.<br><br><b>Manterrupting</b> é a interrupção repetida e desnecessária da fala de mulheres.`,
       lawHTML: `📖 Art. 7º, II da Lei Maria da Penha (Lei nº 11.340/2006).`
     },
     gaslighting:{
       tag:'Fase 1 · Violências Invisíveis',
       title:'🌀 Gaslighting',
-      bodyHTML: `<b>Gaslighting</b> é uma forma de manipulação psicológica em que o agressor faz a vítima duvidar da própria percepção, memória ou sanidade.<br><br>
-      Corrói a autoconfiança e a autonomia ao longo do tempo.`,
+      bodyHTML: `<b>Gaslighting</b> é uma forma de manipulação psicológica em que o agressor faz a vítima duvidar da própria percepção, memória ou sanidade.`,
       lawHTML: `📖 Art. 7º, II da Lei Maria da Penha - Violência Psicológica.`
     },
     geral:{
@@ -1126,8 +1099,7 @@ function showFase1Card(kind, npc){
 
 function fase2Nodes(npc){
   return [
-    { text:"Oi. Estudei sobre o 'Ciclo da Violência'. Quer aprender as três fases comigo?",
-      choices:[{ label:"Quero sim.", next:1 }] },
+    { text:"Oi. Estudei sobre o 'Ciclo da Violência'. Quer aprender as três fases comigo?", choices:[{ label:"Quero sim.", next:1 }] },
     { text:"Fase A: 'Ele andava tenso, criticava tudo, o clima em casa ficava pesado...' A qual fase isso pertence?",
       choices:[
         { label:"Aumento da Tensão", action:()=>{flashFeedback(true);}, next:3 },
@@ -1173,14 +1145,11 @@ function fase3Nodes(npc){
         { label:"Medidas Protetivas", next:5 }
       ]
     },
-    { text:"O Disque 180 é gratuito, sigiloso e funciona 24h por dia em todo o Brasil.",
-      choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
+    { text:"O Disque 180 é gratuito, sigiloso e funciona 24h por dia em todo o Brasil.", choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
     {},
-    { text:"A DEAM oferece atendimento especializado para registro de ocorrência e proteção.",
-      choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
+    { text:"A DEAM oferece atendimento especializado para registro de ocorrência e proteção.", choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]},
     {},
-    { text:"Medidas Protetivas são decisões judiciais urgentes para afastar o agressor.",
-      choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]}
+    { text:"Medidas Protetivas são decisões judiciais urgentes para afastar o agressor.", choices:[{label:"Ver resumo completo", action:()=>showFase3Card(npc), endDialogue:true}]}
   ];
 }
 
@@ -1195,14 +1164,13 @@ function showFase3Card(npc){
 }
 
 /* ============================================================
-   INTERACTION LOGIC (NPCs & MINI QUESTS)
+   INTERAÇÃO
 ============================================================ */
 function nearestNPCInRange(){
   let best=null, bestDist=Infinity;
   const pc = {x:player.x+player.w/2, y:player.y+player.h/2};
   npcs.forEach(n=>{
-    const nc = {x:n.x+n.w/2, y:n.y+n.h/2};
-    const d = Math.hypot(pc.x-nc.x, pc.y-nc.y);
+    const d = Math.hypot(pc.x - (n.x+n.w/2), pc.y - (n.y+n.h/2));
     if(d<65 && d<bestDist){ bestDist=d; best=n; }
   });
   return best;
@@ -1221,11 +1189,7 @@ function nearestQuestItemInRange(){
 }
 
 function startInteraction(npc){
-  if(npc.done){
-    openDialogue(npc, [{ text: doneLine(npc) }]);
-    return;
-  }
-  npc.talked = true;
+  if(npc.done){ openDialogue(npc, [{ text: doneLine(npc) }]); return; }
   if(npc.phase===1) openDialogue(npc, fase1Nodes(npc));
   else if(npc.phase===2) openDialogue(npc, fase2Nodes(npc));
   else if(npc.phase===3) openDialogue(npc, fase3Nodes(npc));
@@ -1233,7 +1197,7 @@ function startInteraction(npc){
 
 function collectMiniQuest(q){
   q.collected = true;
-  playSfxItem(); // Áudio get-item.mp3 ao pegar item
+  playSfxItem();
   flashFeedback(true);
   spawnParticles(q.x, q.y, COLORS.gold, 30);
   const collectedCount = miniQuests.filter(mq=>mq.collected).length;
@@ -1243,7 +1207,7 @@ function collectMiniQuest(q){
     tag: 'Mini Quest · Colecionável Encontrado!',
     title: `${q.icon} ${q.title}`,
     bodyHTML: q.desc,
-    lawHTML: '✨ Item adicionado ao seu conhecimento coletivo!',
+    lawHTML: '✨ Item adicionado ao seu conhecimento!',
     onClose: ()=> { gameState = 'explore'; }
   });
 }
@@ -1255,7 +1219,7 @@ function doneLine(npc){
 }
 
 /* ============================================================
-   CONTROLES DE ENTRADA & SPRINT
+   CONTROLES DE ENTRADA E EVENTOS DO MENU
 ============================================================ */
 window.addEventListener('keydown', e=>{
   KEYS[e.code] = true;
@@ -1277,7 +1241,7 @@ window.addEventListener('keydown', e=>{
 });
 window.addEventListener('keyup', e=>{ KEYS[e.code]=false; });
 
-/* Menu Interações (Fiéis ao Layout Solicitado) */
+// BOTOES DO MENU
 document.getElementById('btnStartGame').addEventListener('click', ()=>{
   document.getElementById('mainMenu').classList.add('hidden');
   stopAudio(bgMenu);
@@ -1290,17 +1254,20 @@ document.getElementById('btnContinue').addEventListener('click', ()=>{
 });
 
 document.getElementById('btnLoad').addEventListener('click', ()=>{
-  alert("Não há jogos salvos no momento. Iniciando um novo caminho.");
+  alert("Nenhum progresso anterior encontrado. Iniciando nova jornada!");
   document.getElementById('btnStartGame').click();
 });
 
+// ABRIR E FECHAR MENU DE TÍTULOS CORRETAMENTE
+const titlesOverlay = document.getElementById('titlesOverlay');
+
 document.getElementById('btnTitles').addEventListener('click', ()=>{
   updateTitlesUI();
-  document.getElementById('titlesOverlay').classList.add('visible');
+  titlesOverlay.classList.add('visible');
 });
 
 document.getElementById('titlesCloseBtn').addEventListener('click', ()=>{
-  document.getElementById('titlesOverlay').classList.remove('visible');
+  titlesOverlay.classList.remove('visible');
 });
 
 document.getElementById('btnCode').addEventListener('click', ()=>{
@@ -1309,18 +1276,18 @@ document.getElementById('btnCode').addEventListener('click', ()=>{
     const formattedCode = code.trim().toLowerCase();
     if(formattedCode === "180"){
       unlockTitle("Protetora de Direitos", "Concedido por utilizar o código oficial 180 da Central de Atendimento à Mulher.");
-      alert("Código Aceito! Você ganhou o título 'Protetora de Direitos'. Confira na opção 'Meus Títulos'.");
+      alert("✨ Código Aceito! Título 'Protetora de Direitos' desbloqueado!");
     } else if(formattedCode === "kawazin"){
-      unlockTitle("Criador do Jogo", "Título lendário concedido ao criador supremo do jogo, Kawazin!");
-      alert("👑 Código Supremo Aceito! Você adquiriu a tag e o título de 'Criador do Jogo'! Confira na opção 'Meus Títulos'.");
+      unlockTitle("Criador Supremo", "Título lendário concedido ao mestre criador do jogo, Kawazin!");
+      alert("👑 Código Supremo Aceito! Tag 'Criador Supremo' conquistada!");
     } else {
-      alert("Código Inválido. Tente usar '180' ou 'kawazin'.");
+      alert("Código Inválido. Tente utilizar '180' ou 'kawazin'.");
     }
   }
 });
 
 document.getElementById('btnOptions').addEventListener('click', ()=>{
-  alert("Opções de Jogo:\n- Tecla Shift: Correr (Sprint)\n- Teclas W,A,S,D ou Setas: Movimentação\n- Tecla E ou Espaço: Interagir / Falar");
+  alert("Controles:\n- Tecla SHIFT: Correr (Sprint)\n- Teclas W,A,S,D / Setas: Movimentação\n- Tecla E / Espaço: Interagir / Falar");
 });
 
 document.getElementById('btnExit').addEventListener('click', ()=>{
@@ -1348,10 +1315,8 @@ document.getElementById('touchInteract').addEventListener('click', ()=>{
 });
 
 /* ============================================================
-   UPDATE LOOP COM DELTA TIME E SPRINT
+   UPDATE LOOP
 ============================================================ */
-let lastTime = performance.now();
-
 function update(dt){
   if(gameState==='menu'){
     playAudio(bgMenu);
@@ -1359,7 +1324,6 @@ function update(dt){
   }
 
   if(gameState==='explore'){
-    // Mecânica de Sprint com a tecla Shift
     player.speed = KEYS['ShiftLeft'] || KEYS['ShiftRight'] ? player.sprintSpeed : player.baseSpeed;
 
     let dx=0, dy=0;
@@ -1448,13 +1412,11 @@ function drawMiniQuests(){
 
     const bob = Math.sin(performance.now()/250 + q.x)*4;
 
-    // Brilho dourado
     ctx.fillStyle = 'rgba(232, 196, 104, 0.25)';
     ctx.beginPath();
     ctx.arc(sx, sy+bob, 18, 0, Math.PI*2);
     ctx.fill();
 
-    // Ícone
     ctx.font = '20px Segoe UI Emoji, Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -1543,9 +1505,7 @@ function drawFence(x,y,w,h){
   }
 }
 
-function drawWater(x,y,w,h){
-  ctx.fillStyle = COLORS.water; roundRect(x,y,w,h,20); ctx.fill();
-}
+function drawWater(x,y,w,h){ ctx.fillStyle = COLORS.water; roundRect(x,y,w,h,20); ctx.fill(); }
 
 function drawFountain(x,y,w,h){
   ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(x+w/2,y+h+4,w/2,6,0,0,Math.PI*2); ctx.fill();
@@ -1553,12 +1513,10 @@ function drawFountain(x,y,w,h){
   ctx.fillStyle = COLORS.water; ctx.beginPath(); ctx.arc(x+w/2,y+h/2,w/2-8,0,Math.PI*2); ctx.fill();
 }
 
-/* RENDEREZAÇÃO DA PERSONAGEM VIA SPRITE 3.PNG */
 function drawPlayer(){
   const sx = player.x-camera.x, sy = player.y-camera.y;
   const bob = player.moving ? Math.sin(player.animT*1.2)*3 : 0;
 
-  // Sombra suave sob a personagem
   ctx.fillStyle='rgba(0,0,0,0.32)';
   ctx.beginPath();
   ctx.ellipse(sx + player.w/2, sy + player.h - 2, player.w*0.4, 5, 0, 0, Math.PI*2);
@@ -1581,42 +1539,34 @@ function drawPlayer(){
   }
 }
 
-/* DESENHO DETALHADO DOS NPCS NO CANVAS */
 function drawNPCs(){
   npcs.forEach(n=>{
     const sx=n.x-camera.x, sy=n.y-camera.y;
     if(sx<-60||sy<-60||sx>VIEW_W+60||sy>VIEW_H+60) return;
 
     const cx = sx + n.w/2;
-    // Sombra
     ctx.fillStyle='rgba(0,0,0,0.3)';
     ctx.beginPath(); ctx.ellipse(cx, sy+n.h, n.w*0.45, 5, 0, 0, Math.PI*2); ctx.fill();
 
-    // Roupas
     ctx.fillStyle = n.clothing;
     roundRect(cx - n.w/2, sy + n.h*0.35, n.w, n.h*0.65, 8); ctx.fill();
 
-    // Cabeça / Tom de pele
     ctx.fillStyle = n.color;
     ctx.beginPath(); ctx.arc(cx, sy + n.h*0.25, n.w*0.38, 0, Math.PI*2); ctx.fill();
 
-    // Cabelo
     ctx.fillStyle = '#2c3e50';
     ctx.beginPath(); ctx.arc(cx, sy + n.h*0.18, n.w*0.4, Math.PI, 0); ctx.fill();
 
-    // Olhos
     ctx.fillStyle = '#111';
     ctx.beginPath(); ctx.arc(cx - 4, sy + n.h*0.25, 1.5, 0, Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.arc(cx + 4, sy + n.h*0.25, 1.5, 0, Math.PI*2); ctx.fill();
 
-    // Nome
     ctx.font='11px Trebuchet MS'; ctx.textAlign='center';
     ctx.fillStyle='rgba(10,6,20,0.65)';
     roundRect(sx+n.w/2-36, sy-16, 72, 16, 6); ctx.fill();
     ctx.fillStyle = n.done ? COLORS.ok : COLORS.cream;
     ctx.fillText(n.name, sx+n.w/2, sy-4);
 
-    // Indicador dinâmico de interação
     const bobY = Math.sin(performance.now()/300 + n.x)*3;
     if(!n.done){
       ctx.font='bold 16px Trebuchet MS'; ctx.fillStyle = COLORS.gold;
@@ -1676,12 +1626,12 @@ function renderMinimap(){
 }
 
 /* ============================================================
-   LOOP PRINCIPAL SINCRO COM FPS
+   LOOP PRINCIPAL SINCRO
 ============================================================ */
 let lastTime = performance.now();
 
 function loop(now){
-  const dt = (now - lastTime) / 1000;
+  const dt = Math.min((now - lastTime) / 1000, 0.1);
   lastTime = now;
 
   update(dt);

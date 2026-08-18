@@ -18,19 +18,11 @@
 
 ---
 
-## 🎬 Demonstração do Projeto
-
-<div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1500944813334331526/1539252059906514996/0818.gif?ex=6a85a3b1&is=6a845231&hm=54bb58fc1961f8c7a5228524d2a50fb3f239552a621f455bb10ad8e85a2c30e6&" alt="Passo a passo do jogo" width="800px">
-</div>
-
----
-
-## 📄 Proposta do Jogo 
+## 📄 Proposta do Jogo (Documentação para Concursos)
 
 O **Caminhos da Proteção** é um projeto gamificado de impacto social criado com o intuito de abordar um tema sensível e urgente: a violência contra a mulher. 
 * **Público-alvo:** Jovens, estudantes e comunidade em geral.
-* **Justificativa:** Ambientes educacionais e de capacitação (como o CIEE) são férteis para a formação cidadã. O uso de *Visual Novel* e RPG atrai o público jovem, facilitando a assimilação de conceitos jurídicos complejos de forma lúdica.
+* **Justificativa:** Ambientes educacionais e de capacitação (como o CIEE) são férteis para a formação cidadã. O uso de *Visual Novel* e RPG atrai o público jovem, facilitando a assimilação de conceitos jurídicos complexos de forma lúdica.
 * **Base Legal:** Lei nº 11.340/2006 (Lei Maria da Penha) e os cinco tipos de violência doméstica (física, psicológica, sexual, patrimonial e moral).
 
 ---
@@ -40,16 +32,21 @@ O **Caminhos da Proteção** é um projeto gamificado de impacto social criado c
 1. **Acesso:** Não é necessário instalar nenhum programa ou aplicativo pesado no computador. O jogo roda diretamente no navegador de internet.
 2. **Início:** Na tela inicial, clique em **"Novo Jogo"** para iniciar a jornada da protagonista.
 3. **Movimentação e Interação:** Utilize as opções da tela ou os comandos indicados para explorar os cenários da vila e conversar com os personagens.
-4. **Tomada de Decisões:** Durante as fases, o jogador enfrentará situações cotidianas e precisará identificar comportamentos abusivos sutis (como *gaslighting* e *mansplaining*), respondendo a quizzes educativos que ajudam a avançar na história e desbloquear redes de apoio.
+4. **Tomada de Decisões:** Durante as fases, o jogador enfrentará situações cotidianas e precisará identificar comportamentos abusivos sutis (como *gaslighting* e *mansplaining*), respondendo a quizzes educativos.
 
 ---
 
-## 🚀 Como Executar o Jogo Localmente
+## ⚙️ Passo a Passo: Como Baixar e Executar o Projeto
 
-Caso queira abrir os arquivos no seu computador:
-1. Faça o download ou clone este repositório.
-2. Certifique-se de que possui um navegador web atualizado (Google Chrome, Microsoft Edge ou Mozilla Firefox).
-3. Dê um **duplo clique** no arquivo `index.html`. O jogo abrirá imediatamente na sua aba de navegação.
+Abaixo segue a demonstração visual detalhada de como acessar, baixar os arquivos e executar o jogo no seu computador:
+
+<div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1500944813334331526/1539252059906514996/0818.gif?ex=6a85a3b1&is=6a845231&hm=54bb58fc1961f8c7a5228524d2a50fb3f239552a621f455bb10ad8e85a2c30e6&" alt="Passo a passo de como executar o projeto" width="800px">
+</div>
+
+1. **Baixe ou Clone o Repositório:** Clique no botão verde *"Code"* no topo do repositório do GitHub e selecione **"Download ZIP"**, ou utilize o comando `git clone`.
+2. **Extraia os Arquivos:** Caso tenha baixado em formato ZIP, descompacte a pasta no seu computador.
+3. **Abra no Navegador:** Certifique-se de ter um navegador atualizado (Google Chrome, Microsoft Edge ou Firefox). Dê um duplo clique no arquivo `index.html` para abrir e rodar o jogo instantaneamente, sem travamentos!
 
 ---
 

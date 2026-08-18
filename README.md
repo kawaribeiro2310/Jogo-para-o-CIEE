@@ -26,7 +26,7 @@
 
 ---
 
-## 📄 Proposta do Jogo (Documentação para Concursos)
+## 📄 Proposta do Jogo 
 
 O **Caminhos da Proteção** é um projeto gamificado de impacto social criado com o intuito de abordar um tema sensível e urgente: a violência contra a mulher. 
 * **Público-alvo:** Jovens, estudantes e comunidade em geral.
